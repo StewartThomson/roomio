@@ -2,10 +2,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var TransactionSchema = new Schema({
+  title: String,
+  description: String,
 	fromid: Schema.Types.ObjectId,
-	from: String,
 	toid: Schema.Types.ObjectId,
-	to: String,
 	amount: Number,
 	date: Date
 });

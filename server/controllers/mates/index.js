@@ -7,24 +7,6 @@ var createMate = function(req, res){
 		if(err){
 			res.send(500, err);
 		}
-		var nameInsert = mate.name;
-		var newId = mate._id;
-		Mate.updateMany({_id: {$ne: newId}}, {"$push": {"balances":{"_id":newId, "name":nameInsert, "owedTo":0}}},  function(err, raw){
-	      	if(err) {
-	      		console.log(err)
-	      	}
-	    });
-		Mate.find({_id: {$ne: newId}}, function(err, mates){
-			console.log(mates);
-			mates.forEach(function(user){
-				console.log(user);
-	      		Mate.updateOne({_id: {$eq: newId}}, {"$push": {"balances":{"_id":user._id, "name":user.name, "owedTo": 0}}}, function(err, raw){
-	      			if(err) {
-	      				console.log(err)
-	      			}
-	      		});
-			});
-		});
 		
 		res.json(200, mate);
 	});
@@ -56,6 +38,10 @@ var updateMate = function(req, res){
 		if(req.body.name){
 			mate.name = req.body.name;
 		}
+
+    if(req.body.rooms){
+      mate.rooms = req.body.rooms;
+    }
 
 		mate.save(function(err, mate){
 			if(err){
