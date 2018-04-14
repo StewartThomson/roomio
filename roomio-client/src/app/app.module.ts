@@ -16,6 +16,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AuthService } from './services/auth.service';
 import { DashComponent } from './dash/dash.component';
 import { AuthGuardService } from './services/auth-guard.service';
+import { SignupComponent } from './signup/signup.component';
 
 const appRoutes: Routes = [
   {
@@ -23,6 +24,7 @@ const appRoutes: Routes = [
   },
   { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: DashComponent, canActivate: [AuthGuardService]},
+  { path: 'signup', component: SignupComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full'},
   { path: '**', component: PageNotFoundComponent }
 ]
@@ -34,7 +36,8 @@ const appRoutes: Routes = [
     RoomsComponent,
     PageNotFoundComponent,
     LoginComponent,
-    DashComponent
+    DashComponent,
+    SignupComponent
   ],
   imports: [
     RouterModule.forRoot(

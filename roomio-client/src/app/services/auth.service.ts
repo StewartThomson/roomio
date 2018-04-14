@@ -38,4 +38,12 @@ export class AuthService {
   logout(){
     this._firebaseAuth.auth.signOut().then((res) => this.router.navigate(['/']));
   }
+
+  returnEmail(){
+    return this._firebaseAuth.auth.currentUser.email;
+  }
+
+  createUser(name, email, password){
+    return this._firebaseAuth.auth.createUserWithEmailAndPassword(email, password)
+  }
 }
