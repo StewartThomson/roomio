@@ -46,4 +46,8 @@ export class AuthService {
   createUser(name, email, password){
     return this._firebaseAuth.auth.createUserWithEmailAndPassword(email, password)
   }
+
+  deleteUser(){
+    return this.userDetails.delete();
+  }
 }

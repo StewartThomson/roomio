@@ -22,13 +22,18 @@ export class SignupComponent implements OnInit {
   }
 
   signUp(){
-    this.authService.createUser(this.user.name, this.user.email, this.user.password).then((res) => {
+    this.authService.createUser(this.user.name, this.user.email, this.user.password).then(res => {
       res.updateProfile({displayName: this.user.name});
-      this.authService.signInRegular(this.user.email, this.user.password).then((res) => {
+      this.authService.signInRegular(this.user.email, this.user.password).then(res => {
         console.log(res);
-        this.router.navigate(['dashboard']).then(() => {
-          this.dbbackendservice.createMate(this.user.name, this.user.email);
+        this.dbbackendservice.createMate(this.user.name, this.user.email).then(res => {
+          console.log(res);
+          this.router.navigate(['dashboard']);
+        }).catch(err => {
+          console.log('Error creating mate');
+          this.authService.deleteUser();
         });
+        
       }).catch((err) => console.log('error: ' + err));
     }).catch((err) => console.log('error: ' + err));
     
