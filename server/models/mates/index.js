@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 
 var MateSchema = new Schema({
 	name: String,
+  email: String,
 	rooms: [{_id: Schema.Types.ObjectId, name: String}],
 });
 

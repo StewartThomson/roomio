@@ -7,7 +7,7 @@ var TransactionSchema = new Schema({
 	fromid: Schema.Types.ObjectId,
 	toid: Schema.Types.ObjectId,
 	amount: Number,
-	date: Date
+	date: {type: Date, default: Date.now};
 });
 
 module.exports = mongoose.model('Transaction', TransactionSchema);

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { DbbackendService } from '../services/dbbackend.service';
 import * as firebase from 'firebase/app';
 
 @Component({
@@ -15,9 +16,7 @@ export class SignupComponent implements OnInit {
     password: ''
   };
 
-  err;
-
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router, private dbbackendservice: DbbackendService) { }
 
   ngOnInit() {
   }
@@ -27,11 +26,11 @@ export class SignupComponent implements OnInit {
       res.updateProfile({displayName: this.user.name});
       this.authService.signInRegular(this.user.email, this.user.password).then((res) => {
         console.log(res);
-        this.router.navigate(['dashboard']);
+        this.router.navigate(['dashboard']).then(() => {
+          this.dbbackendservice.createMate(this.user.name, this.user.email);
+        });
       }).catch((err) => console.log('error: ' + err));
-    }).catch((error) => {
-      this.err = error;
-    });
+    }).catch((err) => console.log('error: ' + err));
     
   }
 }

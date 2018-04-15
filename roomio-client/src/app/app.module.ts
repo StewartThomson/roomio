@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http'
 import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
@@ -16,6 +17,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AuthService } from './services/auth.service';
 import { DashComponent } from './dash/dash.component';
 import { AuthGuardService } from './services/auth-guard.service';
+import { DbbackendService } from './services/dbbackend.service';
 import { SignupComponent } from './signup/signup.component';
 
 const appRoutes: Routes = [
@@ -47,9 +49,10 @@ const appRoutes: Routes = [
     AngularFireAuthModule,
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    HttpClientModule
   ],
-  providers: [AuthService, AuthGuardService],
+  providers: [AuthService, AuthGuardService, DbbackendService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
