@@ -23,12 +23,21 @@ var getMates = function (req, res){
 
 var getMate = function(req, res){
 	Mate.findById(req.params.id, function(err, mate){
-	    if(err){
-	    	res.send(500, err);
-	    }
-	    res.json(200, mate);
+    if(err){
+    	res.send(500, err);
+    }
+    res.json(200, mate);
 	});
 };
+
+var getMateByEmail = function(req, res){
+  Mate.findOne({email: req.params.email}, function(err, mate){
+    if(err){
+      res.send(500, err);
+    }
+    res.json(200, mate);
+  });
+}
 
 var updateMate = function(req, res){
 	Mate.findById(req.params.id, function(err, mate){
@@ -66,5 +75,6 @@ module.exports = {
 	getMates,
 	getMate,
 	updateMate,
-	deleteMate
+	deleteMate,
+  getMateByEmail
 };

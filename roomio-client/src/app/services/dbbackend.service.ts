@@ -6,20 +6,14 @@ import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { catchError, retry } from 'rxjs/operators';
 
 export interface Mate{
+  _id: string;
   name: string;
   email: string;
   rooms: Array<object>;
 }
 
-export interface Room{
-  name: string;
-  balances: Array<Object>;
-  admin: string;
-  recentlyAdded: string;
-  count: number;
-}
-
 export interface Transaction{
+  _id: string;
   title: string;
   description: string;
   fromid: string;
@@ -28,10 +22,6 @@ export interface Transaction{
   date: Date;
 }
 
-class MateFrame{
-  name: string;
-  email: string;
-}
 
 @Injectable()
 export class DbbackendService {
@@ -40,6 +30,18 @@ export class DbbackendService {
 
   constructor(private http: HttpClient) { }
 
+  returnUser(){
+    return this.currentUser;
+  }
+
+  returnUserId(){
+    return this.currentUser._id
+  }
+
+  returnUserName(){
+    return this.currentUser.name;
+  }
+
   async createMate(name: string, email: string){
     let thisUrl = this.url + '/mate/create';
     let httpOptions = {
@@ -47,23 +49,18 @@ export class DbbackendService {
         'Content-Type': 'application/json'
       })
     };
-    let user = new MateFrame();
+    //let user = new MateFrame();
+    let user: Mate;
     user.name = name;
     user.email = email;
 
-    //let attemptCreation = new Promise((resolve, reject) => {
     await this.http.post<Mate>(thisUrl, user, httpOptions)
     .pipe(
       retry(3),
       catchError((res) => this.handleError(res)),
     ).subscribe(mate => {this.currentUser = mate;});
-    //});
 
-    /*attemptCreation.then((res) => {
-      return 'success';
-    })*/
-
-    if(this.currentUser != null){
+    if(this.currentUser){
       return 'Mate created';
     }else{
       throw 'Unable to create mate';
@@ -71,21 +68,36 @@ export class DbbackendService {
 
   }
 
-  getMate(id: string){
+  async getMate(id: string){
     let thisUrl = this.url + '/mate/' + id;
 
-    return this.http.get<Mate>(thisUrl)
+    await this.http.get<Mate>(thisUrl)
       .pipe(
+        retry(3),
         catchError((res) => this.handleError(res))
-      )
+      ).subscribe(mate => {this.currentUser = mate;});
+
+    if(this.currentUser){
+      return 'Mate retrieved';
+    }else{
+      throw 'Unable to retrieve mate';
+    }
   }
 
-  createRoom(name: string){
+  async getMateByEmail(email: string){
+    let thisUrl = this.url + '/mateEmail/' + email;
 
-  }
+    await this.http.get<Mate>(thisUrl)
+      .pipe(
+        retry(3),
+        catchError((res) => this.handleError(res))
+      ).subscribe(mate => {this.currentUser = mate;});;
 
-  getRoom(id: string){
-
+    if(this.currentUser){
+      return 'Mate retrieved';
+    }else{
+      throw 'Unable to retrieve mate';
+    }
   }
 
   createTransaction(title: string, description: string, fromid: string, toid: string, amount: number){
@@ -96,7 +108,7 @@ export class DbbackendService {
 
   }
 
-  private handleError(error: HttpErrorResponse){
+  handleError(error: HttpErrorResponse){
     if(error.error instanceof ErrorEvent){
       console.error('Error occurred:', error.error.message);
     }else{

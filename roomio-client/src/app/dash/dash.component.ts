@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import * as firebase from 'firebase/app';
-import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { DbbackendService } from '../services/dbbackend.service';
+import { RoomService } from '../services/room.service';
 
 @Component({
   selector: 'app-dash',
@@ -9,9 +9,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./dash.component.css']
 })
 export class DashComponent implements OnInit {
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private roomservice: RoomService, private router: Router, private dbbackendservice: DbbackendService) { }
 
-  email = this.authService.returnEmail();
+  mate = this.dbbackendservice.returnUser();
+  mates = this.roomservice.allMateNames();
   
   ngOnInit() {
   }

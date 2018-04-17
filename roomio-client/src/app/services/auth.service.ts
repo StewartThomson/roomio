@@ -36,7 +36,7 @@ export class AuthService {
   }
 
   logout(){
-    this._firebaseAuth.auth.signOut().then((res) => this.router.navigate(['/']));
+    this._firebaseAuth.auth.signOut().then();
   }
 
   returnEmail(){

@@ -7,6 +7,7 @@ var rooms = require(base + '/controllers/rooms');
 
 router.get('/mates', mates.getMates);
 router.get('/mate/:id', mates.getMate);
+router.get('/mateEmail/:email', mates.getMateByEmail);
 router.post('/mate/create', mates.createMate);
 router.put('/mate/:id', mates.updateMate);
 router.delete('/mate/:id', mates.deleteMate);
@@ -19,7 +20,7 @@ router.delete('/transaction/:id', transactions.deleteTransaction);
 
 router.get('/rooms', rooms.getRooms);
 router.get('/room/:id', rooms.getRoom);
-router.post('/room/create', rooms.createRoom);
+router.post('/room/create/:userid', rooms.createRoom);
 router.put('/room/:id', rooms.updateRoom);
 router.delete('/room/:id', rooms.deleteRoom);
 router.put('/room/:roomId/:mateId', rooms.addMateToRoom);

@@ -1,15 +1,23 @@
 var base = process.env.PWD;
 var Room = require(base + '/models/rooms');
+var Mate = require(base + '/models/mates');
 
 var createRoom = function(req, res){
   var room = new Room(req.body);
   room.count = 1;
   room.recentlyAdded = room.admin;
-  room.save(function(err, room){
+  Mate.findById(req.params.userid, function(err, mate){
     if(err){
       res.send(500, err);
     }
-    res.json(200, room);
+
+    room.save(function(err, room){
+      if(err){
+        res.send(500, err);
+      }
+      mate.rooms.push({_id: room._id , name: room.name})
+      res.json(200, room);
+    });
   });
 };
 

@@ -1,1 +1,5 @@
-<p>{{ email }}</p>
+<p>{{ mate | json }}</p>
+
+<ul>
+  <li *ngFor="let mate of mates"><a>{{ mate }}</a></li>
+</ul>
