@@ -3,3 +3,21 @@
 <ul>
   <li *ngFor="let mate of mates"><a>{{ mate }}</a></li>
 </ul>
+
+<ng-template #roomInfo let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Room Info</h4>
+    <button class="close" type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Lorem ipsum</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" (click)="createRoom; c('Close click')" class="btn btn-primary">Create</button>
+    <button type="button" (click)="c('Close click')" class="btn btn-light">Close</button>
+  </div>
+</ng-template>
+
+<button (click)="createRoomModal(roomInfo)">Create Room</button>

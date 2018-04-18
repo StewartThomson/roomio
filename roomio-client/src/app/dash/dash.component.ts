@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { DbbackendService } from '../services/dbbackend.service';
-import { RoomService } from '../services/room.service';
+import { DbbackendService, Mate } from '../services/dbbackend.service';
+import { RoomService, Room } from '../services/room.service';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-dash',
@@ -9,12 +10,18 @@ import { RoomService } from '../services/room.service';
   styleUrls: ['./dash.component.css']
 })
 export class DashComponent implements OnInit {
-  constructor(private roomservice: RoomService, private router: Router, private dbbackendservice: DbbackendService) { }
+  constructor(private modalService: NgbModal, private roomservice: RoomService, private router: Router, private dbbackendservice: DbbackendService) { }
 
-  mate = this.dbbackendservice.returnUser();
-  mates = this.roomservice.allMateNames();
-  
+  mate: Mate = this.dbbackendservice.returnUser();
+  mates: Array<Mate>;
+
   ngOnInit() {
+    if(this.mate.rooms.length > 0){
+      this.mates = this.roomservice.allMateNames();
+    }
   }
 
+  createRoomModal(content){
+    this.modalService.open(content, {centered: true});
+  }
 }

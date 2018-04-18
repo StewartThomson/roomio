@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http'
 import { RouterModule, Routes } from '@angular/router';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -19,6 +20,7 @@ import { DashComponent } from './dash/dash.component';
 import { AuthGuardService } from './services/auth-guard.service';
 import { DbbackendService } from './services/dbbackend.service';
 import { SignupComponent } from './signup/signup.component';
+import { RoomService } from './services/room.service';
 
 const appRoutes: Routes = [
   {
@@ -50,9 +52,10 @@ const appRoutes: Routes = [
     BrowserModule,
     FormsModule,
     HttpModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule.forRoot()
   ],
-  providers: [AuthService, AuthGuardService, DbbackendService],
+  providers: [AuthService, AuthGuardService, DbbackendService, RoomService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

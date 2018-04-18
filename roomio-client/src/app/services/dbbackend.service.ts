@@ -9,7 +9,7 @@ export interface Mate{
   _id: string;
   name: string;
   email: string;
-  rooms: Array<object>;
+  rooms: [{_id: string, name: string}];
 }
 
 export interface Transaction{
@@ -70,15 +70,15 @@ export class DbbackendService {
 
   async getMate(id: string){
     let thisUrl = this.url + '/mate/' + id;
-
+    let mateToReturn: Mate = null;
     await this.http.get<Mate>(thisUrl)
       .pipe(
         retry(3),
         catchError((res) => this.handleError(res))
-      ).subscribe(mate => {this.currentUser = mate;});
+      ).subscribe(mate => { mateToReturn = mate;});
 
-    if(this.currentUser){
-      return 'Mate retrieved';
+    if(mateToReturn){
+      return mateToReturn;
     }else{
       throw 'Unable to retrieve mate';
     }

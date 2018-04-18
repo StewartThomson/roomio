@@ -4,7 +4,7 @@ import { HttpClient, HttpErrorResponse, HttpResponse, HttpHeaders } from '@angul
 import { Http, HttpModule } from '@angular/http';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { catchError, retry } from 'rxjs/operators';
-import { DbbackendService } from '../services/dbbackend.service';
+import { DbbackendService, Mate } from '../services/dbbackend.service';
 
 export interface Room{
   _id: string;
@@ -67,12 +67,18 @@ export class RoomService {
 
   allMateNames(){
     let uniqueSet = new Set(this.currentRoom.balances.map(item => item.aid)) //all a names
-    let bnames = this.currentRoom.balances.map(item => item.bid);
-    for(let name of bnames){
-      uniqueSet.add(name);
+    let bids = this.currentRoom.balances.map(item => item.bid);
+    for(let id of bids){
+      uniqueSet.add(id);
     }
-    uniqueSet.delete(this.dbbackendservice.returnUserName());
-    return Array.from(uniqueSet.values());
+    uniqueSet.delete(this.dbbackendservice.returnUserId());
+    let mates: Array<Mate>;
+    for(let id of Array.from(uniqueSet).sort()){
+      this.dbbackendservice.getMate(id).then(res => {
+        mates.push(res);
+      }).catch();
+    }
+    return mates;
   }
 
 }
