@@ -12,10 +12,12 @@
     </button>
   </div>
   <div class="modal-body">
-    <p>Lorem ipsum</p>
+    <p>Room Name:</p>
+    <input id="name" name="name" class="form-control" required minlength="1">
+    <p>(Optional) Invite your mates!</p>
   </div>
   <div class="modal-footer">
-    <button type="button" (click)="createRoom; c('Close click')" class="btn btn-primary">Create</button>
+    <button type="button" (click)="createRoom(); c('Close click')" class="btn btn-primary">Create</button>
     <button type="button" (click)="c('Close click')" class="btn btn-light">Close</button>
   </div>
 </ng-template>

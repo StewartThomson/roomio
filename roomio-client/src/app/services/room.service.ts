@@ -56,7 +56,7 @@ export class RoomService {
       .pipe(
         retry(3),
         catchError((res) => this.dbbackendservice.handleError(res))
-      ).subscribe(mate => {this.currentRoom = mate;});
+      ).subscribe(room => {this.currentRoom = room;});
 
     if(this.currentRoom){
       return 'Room loaded';
@@ -75,7 +75,9 @@ export class RoomService {
     let mates: Array<Mate>;
     for(let id of Array.from(uniqueSet).sort()){
       this.dbbackendservice.getMate(id).then(res => {
-        mates.push(res);
+        if(res){
+          mates.push(<Mate>res);
+        }
       }).catch();
     }
     return mates;

@@ -12,6 +12,8 @@ export interface Mate{
   rooms: [{_id: string, name: string}];
 }
 
+export class Mate implements Mate{}
+
 export interface Transaction{
   _id: string;
   title: string;
@@ -49,33 +51,35 @@ export class DbbackendService {
         'Content-Type': 'application/json'
       })
     };
-    //let user = new MateFrame();
-    let user: Mate;
+
+    let user: Mate = new Mate();
     user.name = name;
     user.email = email;
 
-    await this.http.post<Mate>(thisUrl, user, httpOptions)
-    .pipe(
-      retry(3),
-      catchError((res) => this.handleError(res)),
-    ).subscribe(mate => {this.currentUser = mate;});
-
-    if(this.currentUser){
-      return 'Mate created';
+    let result = await new Promise((resolve, reject) => {
+      this.http.post<Mate>(thisUrl, user, httpOptions)
+      .pipe(
+        retry(3),
+        catchError((res) => this.handleError(res)),
+      ).subscribe(mate => {this.currentUser = mate; resolve('success')});
+    });
+    
+    if(result){
+      return 'Mate Created';
     }else{
-      throw 'Unable to create mate';
+      throw 'Error creating mate';
     }
-
   }
 
   async getMate(id: string){
     let thisUrl = this.url + '/mate/' + id;
-    let mateToReturn: Mate = null;
-    await this.http.get<Mate>(thisUrl)
+    let mateToReturn = await new Promise((resolve, reject) => { 
+      this.http.get<Mate>(thisUrl)
       .pipe(
         retry(3),
         catchError((res) => this.handleError(res))
-      ).subscribe(mate => { mateToReturn = mate;});
+      ).subscribe(mate => { resolve(mate) });
+    });
 
     if(mateToReturn){
       return mateToReturn;
@@ -87,13 +91,15 @@ export class DbbackendService {
   async getMateByEmail(email: string){
     let thisUrl = this.url + '/mateEmail/' + email;
 
-    await this.http.get<Mate>(thisUrl)
+    let result = await new Promise((resolve, reject) => {
+      this.http.get<Mate>(thisUrl)
       .pipe(
         retry(3),
         catchError((res) => this.handleError(res))
-      ).subscribe(mate => {this.currentUser = mate;});;
+      ).subscribe(mate => {this.currentUser = mate; resolve('success')});
+    });
 
-    if(this.currentUser){
+    if(result){
       return 'Mate retrieved';
     }else{
       throw 'Unable to retrieve mate';

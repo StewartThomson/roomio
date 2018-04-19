@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { DbbackendService, Mate } from '../services/dbbackend.service';
 import { RoomService, Room } from '../services/room.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { EmailValidator } from '@angular/forms';
 
 @Component({
   selector: 'app-dash',
@@ -23,5 +24,9 @@ export class DashComponent implements OnInit {
 
   createRoomModal(content){
     this.modalService.open(content, {centered: true});
+  }
+
+  createRoom(name: string, toInvite: Array<string>){
+
   }
 }

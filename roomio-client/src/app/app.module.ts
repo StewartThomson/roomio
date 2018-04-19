@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http'
 import { RouterModule, Routes } from '@angular/router';
@@ -50,10 +50,11 @@ const appRoutes: Routes = [
     AngularFireModule.initializeApp(environment.firebase, 'angular-auth-firebase'),
     AngularFireAuthModule,
     BrowserModule,
-    FormsModule,
     HttpModule,
     HttpClientModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [AuthService, AuthGuardService, DbbackendService, RoomService],
   bootstrap: [AppComponent]

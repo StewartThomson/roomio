@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { DbbackendService } from '../services/dbbackend.service';
-import * as firebase from 'firebase/app';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-signup',
@@ -16,17 +16,30 @@ export class SignupComponent implements OnInit {
     password: ''
   };
 
-  constructor(private authService: AuthService, private router: Router, private dbbackendservice: DbbackendService) { }
+  form: FormGroup;
+  emailTaken = false;
+
+  constructor(private authService: AuthService, private router: Router, private dbbackendservice: DbbackendService, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
+    this.form = this.formBuilder.group({
+      name: [null, [Validators.required]],
+      email: [null, [Validators.required, Validators.email]],
+      password: [null, [Validators.required, Validators.minLength(6)]]
+    });
   }
 
   signUp(){
-    this.authService.createUser(this.user.name, this.user.email, this.user.password).then(res => {
-      res.updateProfile({displayName: this.user.name});
-      this.authService.signInRegular(this.user.email, this.user.password).then(res => {
+    this.emailTaken = false;
+    let name = this.form.value.name.trim();
+    let email = this.form.value.email.trim();
+    let password = this.form.value.password;
+
+    this.authService.createUser(name, email, password).then(res => {
+      res.updateProfile({displayName: name});
+      this.authService.signInRegular(email, password).then(res => {
         console.log(res);
-        this.dbbackendservice.createMate(this.user.name, this.user.email).then(res => {
+        this.dbbackendservice.createMate(name, email).then(res => {
           console.log(res);
           this.router.navigate(['dashboard']);
         }).catch(err => {
@@ -35,7 +48,13 @@ export class SignupComponent implements OnInit {
         });
         
       }).catch((err) => console.log('error: ' + err));
-    }).catch((err) => console.log('error: ' + err));
-    
+    }).catch((err) => { 
+      console.log('error: ' + err);
+      this.emailTaken = true;
+    });
+  }
+
+  reset(){
+    this.form.reset();
   }
 }
