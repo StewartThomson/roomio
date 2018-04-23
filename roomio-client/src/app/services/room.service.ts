@@ -13,7 +13,10 @@ export interface Room{
   admin: string;
   recentlyAdded: string;
   count: number;
+  key: string;
 }
+
+export class Room implements Room{}
 
 @Injectable()
 export class RoomService {
@@ -26,15 +29,16 @@ export class RoomService {
     return this.currentRoom;
   }
 
-  async createRoom(name: string){
-    let thisUrl = this.url + '/room/create/' + this.dbbackendservice.returnUserId();
+  async createRoom(name: string, creator: string){
+    let thisUrl = this.url + '/room/create';
     let httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
       })
     };
-    let room: Room;
+    let room: Room = new Room();
     room.name = name;
+    room.admin = creator;
 
     await this.http.post<Room>(thisUrl, room, httpOptions)
     .pipe(

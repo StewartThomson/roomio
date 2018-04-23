@@ -21,7 +21,7 @@ router.delete('/transaction/:id', transactions.deleteTransaction);
 
 router.get('/rooms', rooms.getRooms);
 router.get('/room/:id', rooms.getRoom);
-router.post('/room/create/:userid', rooms.createRoom);
+router.post('/room/create', rooms.createRoom);
 router.put('/room/:id', rooms.updateRoom);
 router.delete('/room/:id', rooms.deleteRoom);
 router.put('/room/:roomId/:mateId', rooms.addMateToRoom);

@@ -18,19 +18,21 @@
 
       <div class="form-group">
         <div class="col-sm-12">
-          <label for="name" class="control-label required">Room name:</label>
-          <input type="text" id="name" class="form-control">
-          <div class="err" *ngIf="!this.form.get('name').valid && this.form.get('name').touched">
+          <label for="roomName" class="control-label required">Room name:</label>
+          <input type="text" id="roomName" class="form-control" formControlName="roomName">
+          <div class="err" *ngIf="!this.form.get('roomName').valid && this.form.get('roomName').touched">
             Please Enter a Room Name
           </div>
         </div>
       </div>
-
-      
+<!--<div class="modal-footer">
+    <button type="button" (click)="createRoom(); c('Close click')" class="btn btn-primary">Create</button>
+    <button type="button" (click)="c('Close click')" class="btn btn-light">Close</button>
+  </div>-->
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" (click)="createRoom(); c('Close click')" class="btn btn-primary">Create</button>
+    <button type="button" [disabled]="!form.valid" (click)="createRoom(); c('Close click')" class="btn btn-primary">Create</button>
     <button type="button" (click)="c('Close click')" class="btn btn-light">Close</button>
   </div>
 </ng-template>

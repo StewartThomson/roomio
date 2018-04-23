@@ -7,8 +7,8 @@ var createRoom = function(req, res){
   var room = new Room(req.body);
   room.count = 1;
   room.recentlyAdded = room.admin;
-  room.key = uuivV4();
-  Mate.findById(req.params.userid, function(err, mate){
+  room.key = uuidV4();
+  Mate.findById(room.admin, function(err, mate){
     if(err){
       res.send(500, err);
     }
@@ -17,7 +17,12 @@ var createRoom = function(req, res){
       if(err){
         res.send(500, err);
       }
-      mate.rooms.push({_id: room._id , name: room.name})
+      mate.rooms.push({_id: room._id , name: room.name});
+      mate.save((err, mate) => {
+        if(err){
+          res.send(500, err);
+        }
+      });
       res.json(200, room);
     });
   });
