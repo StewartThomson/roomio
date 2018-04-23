@@ -8,6 +8,8 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var config = require('./config/');
 
+require('dotenv').config();
+
 var routes = require('./routes');
 
 var app = express();

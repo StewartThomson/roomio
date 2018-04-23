@@ -1,11 +1,13 @@
 var base = process.env.PWD;
 var Room = require(base + '/models/rooms');
 var Mate = require(base + '/models/mates');
+var uuidV4 = require('uuid/v4');
 
 var createRoom = function(req, res){
   var room = new Room(req.body);
   room.count = 1;
   room.recentlyAdded = room.admin;
+  room.key = uuivV4();
   Mate.findById(req.params.userid, function(err, mate){
     if(err){
       res.send(500, err);

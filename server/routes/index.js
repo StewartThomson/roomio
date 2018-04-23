@@ -4,6 +4,7 @@ var base = process.env.PWD;
 var mates = require(base + '/controllers/mates');
 var transactions = require(base + '/controllers/transactions');
 var rooms = require(base + '/controllers/rooms');
+var userMgmt = require(base + '/controllers/userMgmt');
 
 router.get('/mates', mates.getMates);
 router.get('/mate/:id', mates.getMate);
@@ -24,5 +25,7 @@ router.post('/room/create/:userid', rooms.createRoom);
 router.put('/room/:id', rooms.updateRoom);
 router.delete('/room/:id', rooms.deleteRoom);
 router.put('/room/:roomId/:mateId', rooms.addMateToRoom);
+
+router.post('/userMgmt/invite', userMgmt.inviteUser);
 
 module.exports = router;

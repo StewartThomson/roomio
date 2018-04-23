@@ -6,7 +6,8 @@ var RoomSchema = new Schema({
   balances: [{aid: Schema.Types.ObjectId, bid: Schema.Types.ObjectId, owed: {type: Number, default: 0}}],
   admin: Schema.Types.ObjectId,
   recentlyAdded: Schema.Types.ObjectId,
-  count: Number
+  count: Number,
+  key: String
 });
 
 module.exports = mongoose.model('Room', RoomSchema);
