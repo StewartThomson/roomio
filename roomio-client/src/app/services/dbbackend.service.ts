@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter, Output } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient, HttpErrorResponse, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { Http, HttpModule } from '@angular/http';
@@ -9,7 +9,7 @@ export interface Mate{
   _id: string;
   name: string;
   email: string;
-  rooms: [{_id: string, name: string}];
+  rooms: Array<{_id: string, name: string}>;
 }
 
 export class Mate implements Mate{}
@@ -27,6 +27,8 @@ export interface Transaction{
 
 @Injectable()
 export class DbbackendService {
+  @Output() trackMate: EventEmitter<Mate> = new EventEmitter();
+
   private url = 'http://localhost:3000/api';
   private currentUser: Mate = null;
 
@@ -65,6 +67,7 @@ export class DbbackendService {
     });
     
     if(result){
+      this.trackMate.emit(this.currentUser);
       return 'Mate Created';
     }else{
       throw 'Error creating mate';
@@ -73,16 +76,17 @@ export class DbbackendService {
 
   async getMate(id: string){
     let thisUrl = this.url + '/mate/' + id;
-    let mateToReturn = await new Promise((resolve, reject) => { 
+    let result = await new Promise((resolve, reject) => { 
       this.http.get<Mate>(thisUrl)
       .pipe(
         retry(3),
         catchError((res) => this.handleError(res))
-      ).subscribe(mate => { resolve(mate) });
+      ).subscribe(mate => { this.currentUser = mate; resolve('success') });
     });
 
-    if(mateToReturn){
-      return mateToReturn;
+    if(result){
+      this.trackMate.emit(this.currentUser);
+      return result;
     }else{
       throw 'Unable to retrieve mate';
     }
@@ -100,6 +104,7 @@ export class DbbackendService {
     });
 
     if(result){
+      this.trackMate.emit(this.currentUser);
       return 'Mate retrieved';
     }else{
       throw 'Unable to retrieve mate';

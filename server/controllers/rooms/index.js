@@ -73,8 +73,9 @@ var deleteRoom = function(req, res){
   });
 }
 
-var addMateToRoom = function(req, res){
-  Room.findById(req.params.roomId, function(err, room){
+var addMateToRoom = async function(req, res){
+  let query = Room.where({key: req.params.roomKey});
+  query.findOne(async function(err, room){
     if(err){
       res.send(500, err);
     }
@@ -93,6 +94,26 @@ var addMateToRoom = function(req, res){
     }
 
     room.count = room.count + 1;
+
+    await Mate.findById(req.params.mateId, async function(err, mate){
+      if(err){
+        res.send(500, err);
+      }
+
+      for(let mateRoom of mate.rooms){
+        if(mateRoom._id == room._id){
+          res.send(500, 'User already in this room');
+        }
+      }
+
+      mate.rooms.push({_id: room._id, name: room.name});
+
+      await mate.save(function(err, room){
+        if(err){
+          res.send(500, err);
+        }
+      });
+    });
 
     room.save(function(err, room){
       if(err){

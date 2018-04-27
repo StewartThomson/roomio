@@ -1,9 +1,5 @@
 <p>{{ mate | json }}</p>
 
-<ul>
-  <li *ngFor="let mate of mates"><a>{{ mate }}</a></li>
-</ul>
-
 <ng-template #roomInfo let-c="close" let-d="dismiss">
 
   <div class="modal-header">
@@ -25,16 +21,50 @@
           </div>
         </div>
       </div>
-<!--<div class="modal-footer">
-    <button type="button" (click)="createRoom(); c('Close click')" class="btn btn-primary">Create</button>
-    <button type="button" (click)="c('Close click')" class="btn btn-light">Close</button>
-  </div>-->
+
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" [disabled]="!form.valid" (click)="createRoom(); c('Close click')" class="btn btn-primary">Create</button>
-    <button type="button" (click)="c('Close click')" class="btn btn-light">Close</button>
+    <button mat-raised-button type="button" [disabled]="!form.valid" (click)="createRoom(); c('Close click')">Create</button>
+    <button mat-button type="button" (click)="c('Close click')">Close</button>
   </div>
 </ng-template>
 
-<button (click)="createRoomModal(roomInfo)">Create Room</button>
+<ng-template #joinRoomModal let-c="close" let-d="dismiss">
+
+  <div class="modal-header">
+    <h4 class="modal-title">Join Room</h4>
+    <button class="close" type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <form action="" class="form-horizontal" [formGroup]="joinForm">
+
+      <div class="form-group">
+        <div class="col-sm-12">
+          <label for="roomKey" class="control-label required">Room key:</label>
+          <input type="text" id="roomKey" class="form-control" formControlName="roomKey">
+          <div class="err" *ngIf="!this.joinForm.get('roomKey').valid && this.joinForm.get('roomKey').touched">
+            Please Enter a Room Key
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button mat-raised-button type="button" [disabled]="!joinForm.valid" (click)="joinRoom(); c('Close click')">Join</button>
+    <button mat-button type="button" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>
+
+
+<mat-form-field *ngIf="this.mate.rooms.length > 0">
+  <mat-select [(value)]="selectedRoomId" (change)="selectRoom()">
+    <mat-option *ngFor="let room of this.mate.rooms" [value]="room._id">{{ room.name }}</mat-option>
+  </mat-select>
+</mat-form-field>
+<button mat-button (click)="createRoomModal(roomInfo)">Create Room</button>
+<button mat-button (click)="createRoomModal(joinRoomModal)">Join Room</button>

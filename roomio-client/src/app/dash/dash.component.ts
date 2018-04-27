@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { DbbackendService, Mate } from '../services/dbbackend.service';
 import { RoomService, Room } from '../services/room.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { EmailValidator } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+//import { MatSelectModule } from '@angular/material/select';
+//import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-dash',
@@ -16,15 +18,21 @@ export class DashComponent implements OnInit {
     private dbbackendservice: DbbackendService, private formBuilder: FormBuilder) { }
 
   mate: Mate = this.dbbackendservice.returnUser();
-  mates: Array<Mate>;
   form: FormGroup;
+  joinForm: FormGroup;
+  selectedRoomId;
 
   ngOnInit() {
-    if(this.mate.rooms.length > 0){
-      this.mates = this.roomservice.allMateNames();
-    }
+    this.dbbackendservice.trackMate.subscribe(currentMate => {
+      this.mate = currentMate;
+    });
+
     this.form = this.formBuilder.group({
       roomName: [null, [Validators.required]]
+    });
+
+    this.joinForm = this.formBuilder.group({
+      roomKey: [null, [Validators.required]]
     });
   }
 
@@ -36,6 +44,19 @@ export class DashComponent implements OnInit {
     let name = this.form.value.roomName.trim();
     let admin = this.mate._id;
 
-    this.roomservice.createRoom(name, admin);
+    this.roomservice.createRoom(name, admin).then(() => {
+      this.dbbackendservice.getMate(this.mate._id) //Just updates the user's info
+    });
+  }
+
+  @HostListener('switch')
+  selectRoom(){
+    this.roomservice.loadRoom(this.selectedRoomId).catch(err => console.log(err));
+  }
+
+  joinRoom(){
+    let key = this.joinForm.value.roomKey.trim();
+    let userid = this.mate._id;
+    this.roomservice.joinRoom(userid, key);
   }
 }

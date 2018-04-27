@@ -1,10 +1,15 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, EventEmitter, HostListener, HostBinding } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http'
 import { RouterModule, Routes } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MatSelectModule,
+  MatButtonModule,
+  MatInputModule
+  } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -21,13 +26,12 @@ import { AuthGuardService } from './services/auth-guard.service';
 import { DbbackendService } from './services/dbbackend.service';
 import { SignupComponent } from './signup/signup.component';
 import { RoomService } from './services/room.service';
+import { RoomViewComponent } from './room-view/room-view.component';
 
 const appRoutes: Routes = [
-  {
-    path: 'home', component: HomeComponent
-  },
+  { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'dashboard', component: DashComponent, canActivate: [AuthGuardService]},
+  { path: 'view', component: RoomViewComponent, canActivate: [AuthGuardService]},
   { path: 'signup', component: SignupComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full'},
   { path: '**', component: PageNotFoundComponent }
@@ -41,7 +45,8 @@ const appRoutes: Routes = [
     PageNotFoundComponent,
     LoginComponent,
     DashComponent,
-    SignupComponent
+    SignupComponent,
+    RoomViewComponent
   ],
   imports: [
     RouterModule.forRoot(
@@ -53,8 +58,12 @@ const appRoutes: Routes = [
     HttpModule,
     HttpClientModule,
     NgbModule.forRoot(),
+    MatSelectModule,
+    MatButtonModule,
+    MatInputModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule
   ],
   providers: [AuthService, AuthGuardService, DbbackendService, RoomService],
   bootstrap: [AppComponent]

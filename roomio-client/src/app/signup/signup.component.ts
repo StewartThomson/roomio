@@ -41,7 +41,7 @@ export class SignupComponent implements OnInit {
         console.log(res);
         this.dbbackendservice.createMate(name, email).then(res => {
           console.log(res);
-          this.router.navigate(['dashboard']);
+          this.router.navigate(['view']);
         }).catch(err => {
           console.log('Error creating mate');
           this.authService.deleteUser();

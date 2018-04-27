@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter, Output } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { HttpClient, HttpErrorResponse, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { Http, HttpModule } from '@angular/http';
@@ -9,7 +9,7 @@ import { DbbackendService, Mate } from '../services/dbbackend.service';
 export interface Room{
   _id: string;
   name: string;
-  balances: [{aid: string, bid: string, owed: number}];
+  balances: Array<{aid: string, bid: string, aname: string, bname: string, owed: number}>;
   admin: string;
   recentlyAdded: string;
   count: number;
@@ -20,6 +20,8 @@ export class Room implements Room{}
 
 @Injectable()
 export class RoomService {
+  @Output() changeRoom: EventEmitter<Room> = new EventEmitter();
+
   private url = 'http://localhost:3000/api';
   private currentRoom: Room = null;
 
@@ -40,13 +42,15 @@ export class RoomService {
     room.name = name;
     room.admin = creator;
 
-    await this.http.post<Room>(thisUrl, room, httpOptions)
-    .pipe(
-      retry(3),
-      catchError((res) => this.dbbackendservice.handleError(res)),
-    ).subscribe(room => {this.currentRoom = room;});
+    let result = await new Promise((resolve, reject) => { 
+      this.http.post<Room>(thisUrl, room, httpOptions)
+      .pipe(
+        retry(3),
+        catchError((res) => this.dbbackendservice.handleError(res)),
+      ).subscribe(room => {resolve('Room created')});
+    });
 
-    if(this.currentRoom){
+    if(result){
       return 'Room created';
     }else{
       throw 'Unable to create room';
@@ -56,35 +60,52 @@ export class RoomService {
   async loadRoom(id: string){
     let thisUrl = this.url + '/room/' + id;
 
-    await this.http.get<Room>(thisUrl)
+    let result = await new Promise((resolve, reject) => { 
+      this.http.get<Room>(thisUrl)
       .pipe(
         retry(3),
         catchError((res) => this.dbbackendservice.handleError(res))
-      ).subscribe(room => {this.currentRoom = room;});
+      ).subscribe(room => {this.currentRoom = room; resolve('success')});
+    });
 
-    if(this.currentRoom){
-      return 'Room loaded';
+    if(result){
+      this.changeRoom.emit(this.currentRoom);
+      return this.currentRoom;
     }else{
       throw 'Unable to load room';
     }
   }
 
-  allMateNames(){
-    let uniqueSet = new Set(this.currentRoom.balances.map(item => item.aid)) //all a names
-    let bids = this.currentRoom.balances.map(item => item.bid);
-    for(let id of bids){
-      uniqueSet.add(id);
+  async joinRoom(id: string, key: string){
+    let thisUrl = this.url + '/joinRoom/' + key + '/' + id;
+    let userId = this.dbbackendservice.returnUserId();
+    let result = await new Promise((resolve, reject) => {
+      this.http.get<Room>(thisUrl)
+      .pipe(
+        retry(3),
+        catchError((res) => this.dbbackendservice.handleError(res))
+      ).subscribe(room => { this.dbbackendservice.getMate(userId)}); // refresh user's rooms
+    });
+
+    if(result){
+      return 'Room joined';
+    }else{
+      throw 'Unable to join room';
     }
-    uniqueSet.delete(this.dbbackendservice.returnUserId());
-    let mates: Array<Mate>;
-    for(let id of Array.from(uniqueSet).sort()){
-      this.dbbackendservice.getMate(id).then(res => {
-        if(res){
-          mates.push(<Mate>res);
-        }
-      }).catch();
+  }
+
+  allMates(){
+    let balances = new Array();
+    let userId = this.dbbackendservice.returnUserId();
+    for(let balance of this.currentRoom.balances){
+      if(balance.aid == userId){
+        balances.push({_id: balance.bid, name: balance.bname, owed: balance.owed});
+      }else if(balance.bid == userId){
+        balances.push({_id: balance.aid, name: balance.aname, owed: -balance.owed});
+      }
     }
-    return mates;
+
+    return balances;
   }
 
 }

@@ -24,7 +24,7 @@ router.get('/room/:id', rooms.getRoom);
 router.post('/room/create', rooms.createRoom);
 router.put('/room/:id', rooms.updateRoom);
 router.delete('/room/:id', rooms.deleteRoom);
-router.put('/room/:roomId/:mateId', rooms.addMateToRoom);
+router.get('/joinRoom/:roomKey/:mateId', rooms.addMateToRoom);
 
 router.post('/userMgmt/invite', userMgmt.inviteUser);
 

@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
       console.log(res);
       this.dbbackendservice.getMateByEmail(email).then(res => {
         console.log(res);
-        this.router.navigate(['dashboard']);
+        this.router.navigate(['view']);
       }).catch(err => {
         console.log(err);
         this.loginFailed = true;
