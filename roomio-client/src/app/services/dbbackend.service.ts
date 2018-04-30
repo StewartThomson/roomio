@@ -18,12 +18,14 @@ export interface Transaction{
   _id: string;
   title: string;
   description: string;
+  roomid: string;
   fromid: string;
   toid: string;
   amount: number;
   date: Date;
 }
 
+export class Transaction implements Transaction{}
 
 @Injectable()
 export class DbbackendService {

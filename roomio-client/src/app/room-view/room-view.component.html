@@ -4,3 +4,77 @@
 <app-dash></app-dash>
 
 <p>{{ room | json }}</p>
+
+<button *ngIf="this.room" mat-button (click)="createRoomModal(inviteModal)">Invite Mate</button>
+<ng-template #inviteModal let-c="close" let-d="dismiss">
+
+  <div class="modal-header">
+    <h4 class="modal-title">Invite</h4>
+    <button class="close" type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <form action="" class="form-horizontal" [formGroup]="emailInviteForm">
+
+      <div class="form-group">
+        <div class="col-sm-12">
+          <label for="emailInvite" class="control-label required">Email:</label>
+          <input type="email" id="emailInvite" class="form-control" formControlName="emailInvite">
+          <div class="err" *ngIf="!this.emailInviteForm.get('emailInvite').valid && this.emailInviteForm.get('emailInvite').touched">
+            Please Enter a valid email
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button mat-raised-button type="button" [disabled]="!emailInviteForm.valid" (click)="inviteMate(); c('Close click')">Invite</button>
+    <button mat-button type="button" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>
+
+<mat-form-field *ngIf="this.room">
+  <mat-select [(value)]="selectedMateId" (change)="selectMate()">
+    <mat-option *ngFor="let mate of this.mates" [value]="mate._id">{{ mate.name }}</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<div *ngIf="this.selectedMateId">
+  {{ selectedMate | json }}
+  <h1 *ngIf="this.selectedMate.owed > 0">You owe {{this.selectedMate.name}} ${{this.selectedMate.owed}}</h1>
+  <h1 *ngIf="this.selectedMate.owed < 0">{{this.selectedMate.name}} owes you ${{this.selectedMate.owed}}</h1>
+  <h1 *ngIf="this.selectedMate.owed == 0">No money owed between you and {{this.selectedMate.name}}</h1>
+
+  <mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Give money to {{this.selectedMate.name}}</mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <mat-form-field [formGroup]="sendMoneyForm">
+
+          <div class="form-group">
+            <div class="col-lg">
+              <label for="moneyReason" class="control-label required">Reason:</label>
+              <input matInput type="text" id="moneyReason" class="form-control" formControlName="moneyReason">
+              <div class="err" *ngIf="!this.sendMoneyForm.get('moneyReason').valid && this.sendMoneyForm.get('moneyReason').touched">
+                Please Enter a reason for this transaction;
+              </div>
+            </div>
+          </div>
+      </mat-form-field>
+      <mat-form-field [formGroup]="sendMoneyForm">
+          <div class="form-group">
+            <div class="col-lg">
+              <label for="amount" class="control-label required">Amount:</label>
+              <input matInput type="number" min="0" id="amount" formControlName="amount" class="form-control">
+            </div>
+          </div>
+      </mat-form-field>
+      <button mat-raised-button type="button" [disabled]="!sendMoneyForm.valid" (click)="sendMoney()">Give money</button>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

@@ -5,8 +5,6 @@ import { RoomService, Room } from '../services/room.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { EmailValidator } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-//import { MatSelectModule } from '@angular/material/select';
-//import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-dash',
@@ -42,7 +40,9 @@ export class DashComponent implements OnInit {
 
   createRoom(){
     let name = this.form.value.roomName.trim();
-    let admin = this.mate._id;
+    let admin = new Mate();
+    admin._id = this.mate._id;
+    admin.name = this.mate.name;
 
     this.roomservice.createRoom(name, admin).then(() => {
       this.dbbackendservice.getMate(this.mate._id) //Just updates the user's info
@@ -57,6 +57,8 @@ export class DashComponent implements OnInit {
   joinRoom(){
     let key = this.joinForm.value.roomKey.trim();
     let userid = this.mate._id;
-    this.roomservice.joinRoom(userid, key);
+    let name = this.mate.name;
+
+    this.roomservice.joinRoom(userid, name, key);
   }
 }

@@ -8,7 +8,7 @@ var createRoom = function(req, res){
   room.count = 1;
   room.recentlyAdded = room.admin;
   room.key = uuidV4();
-  Mate.findById(room.admin, function(err, mate){
+  Mate.findById(room.admin.id, function(err, mate){
     if(err){
       res.send(500, err);
     }
@@ -74,24 +74,28 @@ var deleteRoom = function(req, res){
 }
 
 var addMateToRoom = async function(req, res){
-  let query = Room.where({key: req.params.roomKey});
+  let query = Room.where({key: req.body.roomKey});
   query.findOne(async function(err, room){
     if(err){
       res.send(500, err);
     }
 
+    let addId = req.body.id;
+    let addName = req.body.name;
+
     if(room.count > 1){
-      const unique = [...new Set(room.balances.map(item => item.aid))];
+      const unique = [...new Set(room.balances.map(item => {
+        item = {id: item.aid, name: item.aname};
+      }))];
 
-      for(let id of unique){
-        room.balances.push({aid:id, bid:req.params.mateId, owed: 0});
+      for(let mate of unique){
+        room.balances.push({aid: mate.id, bid: addId, aname: mate.name, bname: addName, owed: 0});
       }
-
-      room.balances.push({aid:room.recentlyAdded, bid:req.paarams.mateId, owed: 0});
-    }else{
-      room.balances.push({aid:room.admin, bid:req.params.mateId, owed: 0});
-      room.recentlyAdded = req.params.mateId;
     }
+
+    room.balances.push({aid:room.recentlyAdded.id, bid: addId, aname: room.recentlyAdded.name, bname: addName, owed: 0});
+    room.recentlyAdded.id = addId;
+    room.recentlyAdded.name = addName;
 
     room.count = room.count + 1;
 

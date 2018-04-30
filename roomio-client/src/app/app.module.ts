@@ -7,7 +7,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatSelectModule,
   MatButtonModule,
-  MatInputModule
+  MatInputModule,
+  MatExpansionModule,
   } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -61,6 +62,7 @@ const appRoutes: Routes = [
     MatSelectModule,
     MatButtonModule,
     MatInputModule,
+    MatExpansionModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule

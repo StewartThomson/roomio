@@ -2,15 +2,15 @@ var base = process.env.PWD;
 var Transaction = require(base + '/models/transactions');
 var Room = require(base + '/models/rooms');
 
-var createTransaction = function(req, res){
+var createTransaction = async function(req, res){
 	let transaction = new Transaction(req.body);
 	transaction.save(function(err, transaction){
 		if(err){
 			res.send(500, err);
 		}
 
-    saveDebt(transaction.room, transaction.fromid, transaction.toid, transaction.amount).then(res => {
-      balanceDebts(transaction.room);
+    saveDebt(transaction.roomid, transaction.fromid, transaction.toid, transaction.amount).then(res => {
+      balanceDebts(transaction.roomid);
     });
 
 		res.json(200, transaction);
@@ -18,30 +18,37 @@ var createTransaction = function(req, res){
 };
 
 async function saveDebt(roomid, fromid, toid, amount){
-  await Room.findById(roomid, function(err, room){
-    if(err){
-      return;
-    }
-
-    for(let index in room.balances){
-      let record = room.balances[index];
-      let fromKey = getKey(record, fromid);
-      let toKey = getKey(record, toid);
-      if(fromKey == 'aid' && toKey == 'bid'){
-        room.balances[index].owed -= amount;
-        room.save();
-        break;
-      }else if(fromKey == 'bid' && toKey == 'aid'){
-        room.balances[index.owed] += amount;
-        room.save();
-        break;
+  return new Promise((resolve, reject) => { Room.findById(roomid, function(err, room){
+      if(err){
+        reject('Error finding room');
       }
-    }
+
+      for(let index = 0; index < room.balances.length; index++){
+        let record = JSON.parse(JSON.stringify(room.balances[index])); //Silly, but removes all the mongo stuff
+
+        let fromKey = getKey(record, fromid);
+        let toKey = getKey(record, toid);
+
+        if(fromKey == 'aid' && toKey == 'bid'){
+          room.balances[index].owed -= amount;
+          room.save((err, room) => {
+            console.log('saving debt' + err);
+            resolve('saved');
+          });
+        }else if(fromKey == 'bid' && toKey == 'aid'){
+          room.balances[index.owed] += amount;
+          room.save((err, room) => {
+            console.log('saving debt' + err);
+            resolve('saved');
+          });
+        }
+      }
+    });
   });
 }
 
-function balanceDebts(roomid){
-  Room.findById(roomid, function(err, room){
+async function balanceDebts(roomid){
+  await Room.findById(roomid, function(err, room){
     if(err){
       return;
     }
@@ -55,8 +62,10 @@ function balanceDebts(roomid){
     for(let mate of mateSet){
       let debtAmount = 0;
       for(let record of room.balances){
+        record = JSON.parse(JSON.stringify(record));
         if(record.owed != 0){
           let key = getKey(record, mate);
+
           if(key == 'aid'){
             debtAmount += record.owed;
           }else if(key == 'bid'){
@@ -83,8 +92,8 @@ function balanceDebts(roomid){
     creditors.sort((a,b) => a.debt - b.debt);
 
     //0 out balances
-    for(let i in room.balances){
-      room.balances[i] = 0;
+    for(let index = 0; index < room.balances.length; index++){
+      room.balances[index].owed = 0;
     }
 
     //Redistribute balances
@@ -98,21 +107,26 @@ function balanceDebts(roomid){
           creditors.shift();
         }
 
-        for(let i in room.balances){
+        for(let i = 0; i < room.balances.length; i++){
           let record = room.balances[i];
           if(record.aid == debtor.id && record.bid == creditor.id){
-            room.balances[i] = amount;
+            room.balances[i].owed = amount;
           }else if(record.aid == creditor.id && record.bid == debtor.id){
-            room.balances[i] = -amount;
+            room.balances[i].owed = -amount;
           }
         }
       }
     }
+
+    room.save((err, room) => {
+      console.log('balancing debt' + err);
+    });
   });
 }
 
 function getKey(object, value){
-  return Object.keys(object).find(key => object[key] === value);
+  let key = Object.keys(object).find(key => {return object[key] == value;});
+  return key;
 }
 
 var getTransactions = function(req, res){
