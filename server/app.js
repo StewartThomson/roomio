@@ -10,7 +10,8 @@ var config = require('./config/');
 
 require('dotenv').config();
 
-var routes = require('./routes');
+var routes = require('./routes/index');
+var roomio = require('./route/roomio')
 
 var app = express();
 
@@ -36,7 +37,7 @@ app.use(function(req, res, next){
 });
 
 app.use('/api', routes);
-
+app.use('/roomio', roomio);
 
 function initializeModels(){
 	mongoose.connect(config.db);
