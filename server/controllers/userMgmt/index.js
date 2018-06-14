@@ -14,7 +14,7 @@ const inviteUser = async function(req, res){
     to: req.body.email,
     subject: `You've been invited to a room in roomio!`,
     text: `${req.body.inviter} has invited you to join room ${req.body.room}. 
-    Click the following link to join: stewartdev.ca/roomio.
+    Click the following link to join: http://stewartdev.ca/roomio.
     Join the room using room key: ${req.body.roomKey}
     This is an automated email, please do not reply.`
   };

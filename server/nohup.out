@@ -59,3 +59,14 @@
 2018-06-14T17:35:42.695-0400 I NETWORK  [listener] connection accepted from 127.0.0.1:65138 #11 (1 connection now open)
 2018-06-14T17:35:42.704-0400 I NETWORK  [conn11] received client metadata from 127.0.0.1:65138 conn: { driver: { name: "nodejs", version: "3.0.7" }, os: { type: "Linux", name: "linux", architecture: "x64", version: "4.4.0-17134-Microsoft" }, platform: "Node.js v8.11.1, LE, mongodb-core: 3.0.7" }
 2018-06-14T17:36:19.189-0400 I NETWORK  [conn11] end connection 127.0.0.1:65138 (0 connections now open)
+2018-06-14T17:50:33.220-0400 I NETWORK  [listener] connection accepted from 127.0.0.1:60326 #12 (1 connection now open)
+2018-06-14T17:50:33.229-0400 I NETWORK  [conn12] received client metadata from 127.0.0.1:60326 conn: { driver: { name: "nodejs", version: "3.0.7" }, os: { type: "Linux", name: "linux", architecture: "x64", version: "4.4.0-17134-Microsoft" }, platform: "Node.js v8.11.1, LE, mongodb-core: 3.0.7" }
+2018-06-14T17:51:14.539-0400 I NETWORK  [listener] connection accepted from 127.0.0.1:60875 #13 (2 connections now open)
+2018-06-14T17:52:30.326-0400 I CONTROL  [signalProcessingThread] got signal 15 (Terminated), will terminate after current cmd ends
+2018-06-14T17:52:30.326-0400 I NETWORK  [signalProcessingThread] shutdown: going to close listening sockets...
+2018-06-14T17:52:30.326-0400 I NETWORK  [signalProcessingThread] removing socket file: /tmp/mongodb-27017.sock
+2018-06-14T17:52:30.327-0400 I FTDC     [signalProcessingThread] Shutting down full-time diagnostic data capture
+2018-06-14T17:52:30.336-0400 I STORAGE  [signalProcessingThread] WiredTigerKVEngine shutting down
+2018-06-14T17:52:30.465-0400 I STORAGE  [signalProcessingThread] shutdown: removing fs lock...
+2018-06-14T17:52:30.465-0400 I CONTROL  [signalProcessingThread] now exiting
+2018-06-14T17:52:30.465-0400 I CONTROL  [signalProcessingThread] shutting down with code:0
