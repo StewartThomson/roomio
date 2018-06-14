@@ -1,5 +1,5 @@
 import { Injectable, EventEmitter, Output } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { HttpClient, HttpErrorResponse, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { Http, HttpModule } from '@angular/http';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
@@ -31,7 +31,7 @@ export class Transaction implements Transaction{}
 export class DbbackendService {
   @Output() trackMate: EventEmitter<Mate> = new EventEmitter();
 
-  private url = 'http://localhost:3000/api';
+  private url = 'http://localhost:80/api';
   private currentUser: Mate = null;
 
   constructor(private http: HttpClient) { }
@@ -65,7 +65,7 @@ export class DbbackendService {
       .pipe(
         retry(3),
         catchError((res) => this.handleError(res)),
-      ).subscribe(mate => {this.currentUser = mate; resolve('success')});
+      ).subscribe(mate => {this.currentUser = mate as Mate; resolve('success')});
     });
     
     if(result){
@@ -83,7 +83,7 @@ export class DbbackendService {
       .pipe(
         retry(3),
         catchError((res) => this.handleError(res))
-      ).subscribe(mate => { this.currentUser = mate; resolve('success') });
+      ).subscribe(mate => { this.currentUser = mate as Mate; resolve('success') });
     });
 
     if(result){
@@ -102,7 +102,7 @@ export class DbbackendService {
       .pipe(
         retry(3),
         catchError((res) => this.handleError(res))
-      ).subscribe(mate => {this.currentUser = mate; resolve('success')});
+      ).subscribe(mate => {this.currentUser = mate as Mate; resolve('success')});
     });
 
     if(result){
@@ -128,6 +128,6 @@ export class DbbackendService {
       console.error(`Backend returned code ${error.status}, body was: ${JSON.stringify(error.error)}`);
     }
 
-    return new ErrorObservable('Error occurred, try again later.');
+    return new ErrorObservable();
   }
 }

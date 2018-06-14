@@ -1,0 +1,61 @@
+2018-06-14T17:19:10.583-0400 I CONTROL  [initandlisten] MongoDB starting : pid=5519 port=27017 dbpath=/data/db 64-bit host=DESKTOP-SAK2TGG
+2018-06-14T17:19:10.584-0400 I CONTROL  [initandlisten] db version v3.6.3
+2018-06-14T17:19:10.584-0400 I CONTROL  [initandlisten] git version: 9586e557d54ef70f9ca4b43c26892cd55257e1a5
+2018-06-14T17:19:10.584-0400 I CONTROL  [initandlisten] OpenSSL version: OpenSSL 1.1.0g  2 Nov 2017
+2018-06-14T17:19:10.584-0400 I CONTROL  [initandlisten] allocator: tcmalloc
+2018-06-14T17:19:10.584-0400 I CONTROL  [initandlisten] modules: none
+2018-06-14T17:19:10.584-0400 I CONTROL  [initandlisten] build environment:
+2018-06-14T17:19:10.584-0400 I CONTROL  [initandlisten]     distarch: x86_64
+2018-06-14T17:19:10.584-0400 I CONTROL  [initandlisten]     target_arch: x86_64
+2018-06-14T17:19:10.584-0400 I CONTROL  [initandlisten] options: {}
+2018-06-14T17:19:10.585-0400 I -        [initandlisten] Detected data files in /data/db created by the 'wiredTiger' storage engine, so setting the active storage engine to 'wiredTiger'.
+2018-06-14T17:19:10.585-0400 I STORAGE  [initandlisten] wiredtiger_open config: create,cache_size=3550M,session_max=20000,eviction=(threads_min=4,threads_max=4),config_base=false,statistics=(fast),log=(enabled=true,archive=true,path=journal,compressor=snappy),file_manager=(close_idle_time=100000),statistics_log=(wait=0),verbose=(recovery_progress),
+2018-06-14T17:19:11.075-0400 I STORAGE  [initandlisten] WiredTiger message [1529011151:75171][5519:0x7f78cbd60f80], txn-recover: Main recovery loop: starting at 3/7552
+2018-06-14T17:19:11.175-0400 I STORAGE  [initandlisten] WiredTiger message [1529011151:175679][5519:0x7f78cbd60f80], txn-recover: Recovering log 3 through 4
+2018-06-14T17:19:11.236-0400 I STORAGE  [initandlisten] WiredTiger message [1529011151:236046][5519:0x7f78cbd60f80], txn-recover: Recovering log 4 through 4
+2018-06-14T17:19:11.374-0400 I CONTROL  [initandlisten] 
+2018-06-14T17:19:11.374-0400 I CONTROL  [initandlisten] ** WARNING: Access control is not enabled for the database.
+2018-06-14T17:19:11.374-0400 I CONTROL  [initandlisten] **          Read and write access to data and configuration is unrestricted.
+2018-06-14T17:19:11.374-0400 I CONTROL  [initandlisten] ** WARNING: You are running this process as the root user, which is not recommended.
+2018-06-14T17:19:11.374-0400 I CONTROL  [initandlisten] 
+2018-06-14T17:19:11.374-0400 I CONTROL  [initandlisten] ** WARNING: This server is bound to localhost.
+2018-06-14T17:19:11.374-0400 I CONTROL  [initandlisten] **          Remote systems will be unable to connect to this server. 
+2018-06-14T17:19:11.374-0400 I CONTROL  [initandlisten] **          Start the server with --bind_ip <address> to specify which IP 
+2018-06-14T17:19:11.374-0400 I CONTROL  [initandlisten] **          addresses it should serve responses from, or with --bind_ip_all to
+2018-06-14T17:19:11.374-0400 I CONTROL  [initandlisten] **          bind to all interfaces. If this behavior is desired, start the
+2018-06-14T17:19:11.374-0400 I CONTROL  [initandlisten] **          server with --bind_ip 127.0.0.1 to disable this warning.
+2018-06-14T17:19:11.374-0400 I CONTROL  [initandlisten] 
+2018-06-14T17:19:11.385-0400 I FTDC     [initandlisten] Initializing full-time diagnostic data capture with directory '/data/db/diagnostic.data'
+2018-06-14T17:19:11.386-0400 I NETWORK  [initandlisten] waiting for connections on port 27017
+2018-06-14T17:20:44.175-0400 I NETWORK  [listener] connection accepted from 127.0.0.1:53407 #1 (1 connection now open)
+2018-06-14T17:20:44.175-0400 I NETWORK  [conn1] received client metadata from 127.0.0.1:53407 conn: { application: { name: "robo3t" }, driver: { name: "MongoDB Internal Client", version: "3.4.3-10-g865d2fb" }, os: { type: "Windows", name: "Microsoft Windows 8", architecture: "x86_64", version: "6.2 (build 9200)" } }
+2018-06-14T17:20:52.986-0400 I NETWORK  [listener] connection accepted from 127.0.0.1:53512 #2 (2 connections now open)
+2018-06-14T17:20:52.987-0400 I NETWORK  [conn2] received client metadata from 127.0.0.1:53512 conn: { application: { name: "robo3t" }, driver: { name: "MongoDB Internal Client", version: "3.4.3-10-g865d2fb" }, os: { type: "Windows", name: "Microsoft Windows 8", architecture: "x86_64", version: "6.2 (build 9200)" } }
+2018-06-14T17:20:59.889-0400 I NETWORK  [listener] connection accepted from 127.0.0.1:53613 #3 (3 connections now open)
+2018-06-14T17:20:59.889-0400 I NETWORK  [conn3] received client metadata from 127.0.0.1:53613 conn: { application: { name: "robo3t" }, driver: { name: "MongoDB Internal Client", version: "3.4.3-10-g865d2fb" }, os: { type: "Windows", name: "Microsoft Windows 8", architecture: "x86_64", version: "6.2 (build 9200)" } }
+2018-06-14T17:21:44.174-0400 I NETWORK  [listener] connection accepted from 127.0.0.1:54196 #4 (4 connections now open)
+2018-06-14T17:21:44.174-0400 I NETWORK  [conn4] received client metadata from 127.0.0.1:54196 conn: { application: { name: "MongoDB Shell" }, driver: { name: "MongoDB Internal Client", version: "3.4.3-10-g865d2fb" }, os: { type: "Windows", name: "Microsoft Windows 8", architecture: "x86_64", version: "6.2 (build 9200)" } }
+2018-06-14T17:21:52.988-0400 I NETWORK  [listener] connection accepted from 127.0.0.1:54302 #5 (5 connections now open)
+2018-06-14T17:21:52.989-0400 I NETWORK  [conn5] received client metadata from 127.0.0.1:54302 conn: { application: { name: "MongoDB Shell" }, driver: { name: "MongoDB Internal Client", version: "3.4.3-10-g865d2fb" }, os: { type: "Windows", name: "Microsoft Windows 8", architecture: "x86_64", version: "6.2 (build 9200)" } }
+2018-06-14T17:21:59.892-0400 I NETWORK  [listener] connection accepted from 127.0.0.1:54404 #6 (6 connections now open)
+2018-06-14T17:21:59.892-0400 I NETWORK  [conn6] received client metadata from 127.0.0.1:54404 conn: { application: { name: "MongoDB Shell" }, driver: { name: "MongoDB Internal Client", version: "3.4.3-10-g865d2fb" }, os: { type: "Windows", name: "Microsoft Windows 8", architecture: "x86_64", version: "6.2 (build 9200)" } }
+2018-06-14T17:25:41.994-0400 I NETWORK  [listener] connection accepted from 127.0.0.1:57273 #7 (7 connections now open)
+2018-06-14T17:25:41.996-0400 I NETWORK  [conn7] end connection 127.0.0.1:57273 (6 connections now open)
+2018-06-14T17:25:48.571-0400 I NETWORK  [listener] connection accepted from 127.0.0.1:57372 #8 (7 connections now open)
+2018-06-14T17:25:48.580-0400 I NETWORK  [conn8] received client metadata from 127.0.0.1:57372 conn: { driver: { name: "nodejs", version: "3.0.7" }, os: { type: "Linux", name: "linux", architecture: "x64", version: "4.4.0-17134-Microsoft" }, platform: "Node.js v8.11.1, LE, mongodb-core: 3.0.7" }
+2018-06-14T17:26:43.645-0400 I NETWORK  [conn8] end connection 127.0.0.1:57372 (6 connections now open)
+2018-06-14T17:28:39.727-0400 I NETWORK  [conn2] end connection 127.0.0.1:53512 (5 connections now open)
+2018-06-14T17:28:39.728-0400 I NETWORK  [conn3] end connection 127.0.0.1:53613 (4 connections now open)
+2018-06-14T17:28:39.733-0400 I NETWORK  [conn6] end connection 127.0.0.1:54404 (3 connections now open)
+2018-06-14T17:28:39.733-0400 I NETWORK  [conn5] end connection 127.0.0.1:54302 (2 connections now open)
+2018-06-14T17:28:39.752-0400 I NETWORK  [conn1] end connection 127.0.0.1:53407 (1 connection now open)
+2018-06-14T17:28:39.752-0400 I NETWORK  [conn4] end connection 127.0.0.1:54196 (0 connections now open)
+2018-06-14T17:28:49.103-0400 I NETWORK  [listener] connection accepted from 127.0.0.1:59721 #9 (1 connection now open)
+2018-06-14T17:28:49.112-0400 I NETWORK  [conn9] received client metadata from 127.0.0.1:59721 conn: { driver: { name: "nodejs", version: "3.0.7" }, os: { type: "Linux", name: "linux", architecture: "x64", version: "4.4.0-17134-Microsoft" }, platform: "Node.js v8.11.1, LE, mongodb-core: 3.0.7" }
+2018-06-14T17:31:36.639-0400 I NETWORK  [conn9] end connection 127.0.0.1:59721 (0 connections now open)
+2018-06-14T17:31:37.073-0400 I NETWORK  [listener] connection accepted from 127.0.0.1:61931 #10 (1 connection now open)
+2018-06-14T17:31:37.083-0400 I NETWORK  [conn10] received client metadata from 127.0.0.1:61931 conn: { driver: { name: "nodejs", version: "3.0.7" }, os: { type: "Linux", name: "linux", architecture: "x64", version: "4.4.0-17134-Microsoft" }, platform: "Node.js v8.11.1, LE, mongodb-core: 3.0.7" }
+2018-06-14T17:34:40.141-0400 I NETWORK  [conn10] end connection 127.0.0.1:61931 (0 connections now open)
+2018-06-14T17:35:42.695-0400 I NETWORK  [listener] connection accepted from 127.0.0.1:65138 #11 (1 connection now open)
+2018-06-14T17:35:42.704-0400 I NETWORK  [conn11] received client metadata from 127.0.0.1:65138 conn: { driver: { name: "nodejs", version: "3.0.7" }, os: { type: "Linux", name: "linux", architecture: "x64", version: "4.4.0-17134-Microsoft" }, platform: "Node.js v8.11.1, LE, mongodb-core: 3.0.7" }
+2018-06-14T17:36:19.189-0400 I NETWORK  [conn11] end connection 127.0.0.1:65138 (0 connections now open)

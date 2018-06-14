@@ -1,5 +1,5 @@
 import { Injectable, EventEmitter, Output } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { HttpClient, HttpErrorResponse, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { Http, HttpModule } from '@angular/http';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
@@ -33,7 +33,7 @@ export class Room implements Room{
 export class RoomService {
   @Output() changeRoom: EventEmitter<Room> = new EventEmitter();
 
-  private url = 'http://localhost:3000/api';
+  private url = 'http://localhost:80/api';
   private currentRoom: Room = null;
   private httpOptions = {
     headers: new HttpHeaders({
@@ -78,7 +78,7 @@ export class RoomService {
       .pipe(
         retry(3),
         catchError((res) => this.dbbackendservice.handleError(res))
-      ).subscribe(room => {this.currentRoom = room; resolve('success')});
+      ).subscribe(room => {this.currentRoom = room as Room; resolve('success')});
     });
 
     if(result){
