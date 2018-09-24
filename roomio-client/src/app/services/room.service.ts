@@ -33,7 +33,7 @@ export class Room implements Room{
 export class RoomService {
   @Output() changeRoom: EventEmitter<Room> = new EventEmitter();
 
-  private url = 'http://localhost:80/api';
+  private url = 'http://roomio.stewartdev.ca/api';
   private currentRoom: Room = null;
   private httpOptions = {
     headers: new HttpHeaders({

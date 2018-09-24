@@ -31,7 +31,7 @@ export class Transaction implements Transaction{}
 export class DbbackendService {
   @Output() trackMate: EventEmitter<Mate> = new EventEmitter();
 
-  private url = 'http://localhost:80/api';
+  private url = 'http://roomio.stewartdev.ca/api';
   private currentUser: Mate = null;
 
   constructor(private http: HttpClient) { }

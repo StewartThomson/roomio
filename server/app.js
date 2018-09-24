@@ -11,7 +11,6 @@ var config = require('./config/');
 require('dotenv').config();
 
 var routes = require('./routes/index');
-var roomio = require('./route/roomio')
 
 var app = express();
 
@@ -37,8 +36,9 @@ app.use(function(req, res, next){
 });
 
 app.use('/api', routes);
-app.use('/roomio', roomio);
-
+app.get('/coop', (req, res) => {
+  res.render('coop/index.html');
+});
 function initializeModels(){
 	mongoose.connect(config.db);
 	mongoose.connection.on('error', function(err){
