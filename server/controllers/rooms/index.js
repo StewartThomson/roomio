@@ -85,7 +85,7 @@ let addMateToRoom = async function (req, res) {
 
         if (room.count > 1) {
             const unique = [...new Set(room.balances.map(item => {
-                item = {id: item.aid, name: item.aname};
+                return {id: item.aid, name: item.aname};
             }))];
 
             for (let mate of unique) {

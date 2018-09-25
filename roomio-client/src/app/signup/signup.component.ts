@@ -10,12 +10,6 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
-  user = {
-    name: '',
-    email: '',
-    password: ''
-  };
-
   form: FormGroup;
   emailTaken = false;
 
