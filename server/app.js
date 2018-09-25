@@ -1,18 +1,17 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var favicon = require('serve-favicon');
-var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
-var config = require('./config/');
+let createError = require('http-errors');
+let express = require('express');
+let path = require('path');
+let cookieParser = require('cookie-parser');
+let logger = require('morgan');
+let bodyParser = require('body-parser');
+let mongoose = require('mongoose');
+let config = require('./config/');
 
 require('dotenv').config();
 
-var routes = require('./routes/index');
+let routes = require('./routes/index');
 
-var app = express();
+let app = express();
 
 process.env.NODE_ENV = 'development';
 
@@ -54,7 +53,7 @@ app.use(function(req, res, next) {
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function(err, req, res) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

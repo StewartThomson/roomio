@@ -1,10 +1,11 @@
+<!--suppress ALL -->
 <p>{{ mate | json }}</p>
 
 <ng-template #roomInfo let-c="close" let-d="dismiss">
 
   <div class="modal-header">
     <h4 class="modal-title">Room Info</h4>
-    <button class="close" type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -34,7 +35,7 @@
 
   <div class="modal-header">
     <h4 class="modal-title">Join Room</h4>
-    <button class="close" type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>

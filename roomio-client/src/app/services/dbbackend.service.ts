@@ -1,7 +1,5 @@
 import { Injectable, EventEmitter, Output } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HttpClient, HttpErrorResponse, HttpResponse, HttpHeaders } from '@angular/common/http';
-import { Http, HttpModule } from '@angular/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { catchError, retry } from 'rxjs/operators';
 
@@ -60,11 +58,11 @@ export class DbbackendService {
     user.name = name;
     user.email = email;
 
-    let result = await new Promise((resolve, reject) => {
+    let result = await new Promise((resolve) => {
       this.http.post<Mate>(thisUrl, user, httpOptions)
       .pipe(
         retry(3),
-        catchError((res) => this.handleError(res)),
+        catchError((res) => DbbackendService.handleError(res)),
       ).subscribe(mate => {this.currentUser = mate as Mate; resolve('success')});
     });
     
@@ -78,11 +76,11 @@ export class DbbackendService {
 
   async getMate(id: string){
     let thisUrl = this.url + '/mate/' + id;
-    let result = await new Promise((resolve, reject) => { 
+    let result = await new Promise((resolve) => {
       this.http.get<Mate>(thisUrl)
       .pipe(
         retry(3),
-        catchError((res) => this.handleError(res))
+        catchError((res) => DbbackendService.handleError(res))
       ).subscribe(mate => { this.currentUser = mate as Mate; resolve('success') });
     });
 
@@ -97,11 +95,11 @@ export class DbbackendService {
   async getMateByEmail(email: string){
     let thisUrl = this.url + '/mateEmail/' + email;
 
-    let result = await new Promise((resolve, reject) => {
+    let result = await new Promise((resolve) => {
       this.http.get<Mate>(thisUrl)
       .pipe(
         retry(3),
-        catchError((res) => this.handleError(res))
+        catchError((res) => DbbackendService.handleError(res))
       ).subscribe(mate => {this.currentUser = mate as Mate; resolve('success')});
     });
 
@@ -121,7 +119,7 @@ export class DbbackendService {
 
   }
 
-  handleError(error: HttpErrorResponse){
+  static handleError(error: HttpErrorResponse){
     if(error.error instanceof ErrorEvent){
       console.error('Error occurred:', error.error.message);
     }else{

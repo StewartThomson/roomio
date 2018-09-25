@@ -32,4 +32,4 @@ console.log(process.env.EMAIL_PASS);
 
 module.exports = {
   inviteUser,
-}
+};

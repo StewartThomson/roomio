@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { DbbackendService, Mate } from '../services/dbbackend.service';
 import { RoomService, Room } from '../services/room.service';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { EmailValidator } from '@angular/forms';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-room-view',

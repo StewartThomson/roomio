@@ -1,20 +1,20 @@
-var base = process.env.PWD;
-var Transaction = require(base + '/models/transactions');
-var Room = require(base + '/models/rooms');
+let base = process.env.PWD;
+let Transaction = require(base + '/models/transactions');
+let Room = require(base + '/models/rooms');
 
-var createTransaction = async function(req, res){
-	let transaction = new Transaction(req.body);
-	transaction.save(function(err, transaction){
-		if(err){
-			res.send(500, err);
-		}
+let createTransaction = async function (req, res) {
+    let transaction = new Transaction(req.body);
+    transaction.save(function (err, transaction) {
+        if (err) {
+            res.send(500, err);
+        }
 
-    saveDebt(transaction.roomid, transaction.fromid, transaction.toid, transaction.amount).then(res => {
-      balanceDebts(transaction.roomid);
+        saveDebt(transaction.roomid, transaction.fromid, transaction.toid, transaction.amount).then(() => {
+            balanceDebts(transaction.roomid);
+        });
+
+        res.json(200, transaction);
     });
-
-		res.json(200, transaction);
-	});
 };
 
 async function saveDebt(roomid, fromid, toid, amount){
@@ -29,15 +29,15 @@ async function saveDebt(roomid, fromid, toid, amount){
         let fromKey = getKey(record, fromid);
         let toKey = getKey(record, toid);
 
-        if(fromKey == 'aid' && toKey == 'bid'){
+        if(fromKey === 'aid' && toKey === 'bid'){
           room.balances[index].owed -= amount;
-          room.save((err, room) => {
+          room.save((err) => {
             console.log('saving debt' + err);
             resolve('saved');
           });
-        }else if(fromKey == 'bid' && toKey == 'aid'){
+        }else if(fromKey === 'bid' && toKey === 'aid'){
           room.balances[index.owed] += amount;
-          room.save((err, room) => {
+          room.save((err) => {
             console.log('saving debt' + err);
             resolve('saved');
           });
@@ -54,21 +54,20 @@ async function balanceDebts(roomid){
     }
 
     //Gather all mates
-    let mateSet = [...new Set(room.balances.map(item => item.aid).concat(room.balances.map(item => item.bid)))];;
-
-    let mateBalances = new Array();
+      let mateSet = [...new Set(room.balances.map(item => item.aid).concat(room.balances.map(item => item.bid)))];
+      let mateBalances = [];
 
     //Determine their overall debts to the room
     for(let mate of mateSet){
       let debtAmount = 0;
       for(let record of room.balances){
         record = JSON.parse(JSON.stringify(record));
-        if(record.owed != 0){
+        if(record.owed !== 0){
           let key = getKey(record, mate);
 
-          if(key == 'aid'){
+          if(key === 'aid'){
             debtAmount += record.owed;
-          }else if(key == 'bid'){
+          }else if(key === 'bid'){
             debtAmount -= record.owed;
           }
         }
@@ -76,8 +75,8 @@ async function balanceDebts(roomid){
       mateBalances.push({id: mate, debt: debtAmount});
     }
 
-    let debtors = new Array();
-    let creditors = new Array();
+    let debtors = [];
+    let creditors = [];
 
     //Determine who needs to net give money and who needs to net receive money
     for(let mate of mateBalances){
@@ -100,79 +99,80 @@ async function balanceDebts(roomid){
     for(let debtor of debtors){
       while(debtor.debt > 0){
         let creditor = creditors[0];
-        amount = Math.min(debtor.debt, -creditor.debt);
+        let amount = Math.min(debtor.debt, -creditor.debt);
         creditor.debt += amount;
         debtor.debt -= amount;
-        if(creditor.debt == 0){
+        if(creditor.debt === 0){
           creditors.shift();
         }
 
         for(let i = 0; i < room.balances.length; i++){
           let record = room.balances[i];
-          if(record.aid == debtor.id && record.bid == creditor.id){
+          if(record.aid === debtor.id && record.bid === creditor.id){
             room.balances[i].owed = amount;
-          }else if(record.aid == creditor.id && record.bid == debtor.id){
+          }else if(record.aid === creditor.id && record.bid === debtor.id){
             room.balances[i].owed = -amount;
           }
         }
       }
     }
 
-    room.save((err, room) => {
+    room.save((err) => {
       console.log('balancing debt' + err);
     });
   });
 }
 
 function getKey(object, value){
-  let key = Object.keys(object).find(key => {return object[key] == value;});
-  return key;
+    return Object.keys(object).find(key => {
+      return object[key] === value;
+  });
 }
 
-var getTransactions = function(req, res){
-	Transaction.find(function(err, transactions){
-		if(err){
-			res.send(500, err);
-		}
-		res.json(200, transactions)
-	});
+let getTransactions = function (req, res) {
+    Transaction.find(function (err, transactions) {
+        if (err) {
+            res.send(500, err);
+        }
+        res.json(200, transactions)
+    });
 };
 
-var getTransaction = function(req, res){
-	Transaction.findById(req.params.id, function(err, transaction){
-	    if(err){
-	    	res.send(500, err);
-	    }
-	    res.json(200, transaction);
-	});
+let getTransaction = function (req, res) {
+    Transaction.findById(req.params.id, function (err, transaction) {
+        if (err) {
+            res.send(500, err);
+        }
+        res.json(200, transaction);
+    });
 };
 
-var updateTransaction = function(req, res){
-	Transaction.findById(req.params.id, function(err, transaction){
-		if(err){
-			res.send(500, err);
-		}
-		if(req.body.amount){
-			transaction.amount = req.body.amount;
-		}
+let updateTransaction = function (req, res) {
+    Transaction.findById(req.params.id, function (err, transaction) {
+        if (err) {
+            res.send(500, err);
+        }
+        if (req.body.amount) {
+            transaction.amount = req.body.amount;
+        }
 
-		transaction.save(function(err, transaction){
-			if(err){
-				res.send(500, err);
-			}
-			res.json(200, transaction);
-		});
-	});
+        transaction.save(function (err, transaction) {
+            if (err) {
+                res.send(500, err);
+            }
+            res.json(200, transaction);
+        });
+    });
 };
 
-var deleteTransaction = function(req, res){
-	Transaction.findByIdAndRemove(req.params.id, function(err, transaction){
-		if(err){
-			res.send(500, err);
-		}
-		res.json(200, {'deleted': true});
-	});
-}
+let deleteTransaction = function (req, res) {
+    Transaction.findByIdAndRemove(req.params.id, function (err) {
+        if (err) {
+            res.send(500, err);
+        }
+        res.json(200, {'deleted': true});
+    });
+};
 
 module.exports = {
 	createTransaction,

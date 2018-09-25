@@ -1,10 +1,10 @@
-var express = require('express');
-var router = express.Router();
-var base = process.env.PWD;
-var mates = require(base + '/controllers/mates');
-var transactions = require(base + '/controllers/transactions');
-var rooms = require(base + '/controllers/rooms');
-var userMgmt = require(base + '/controllers/userMgmt');
+let express = require('express');
+let router = express.Router();
+let base = process.env.PWD;
+let mates = require(base + '/controllers/mates');
+let transactions = require(base + '/controllers/transactions');
+let rooms = require(base + '/controllers/rooms');
+let userMgmt = require(base + '/controllers/userMgmt');
 
 router.get('/mates', mates.getMates);
 router.get('/mate/:id', mates.getMate);

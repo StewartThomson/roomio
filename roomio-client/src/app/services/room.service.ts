@@ -1,10 +1,7 @@
 import { Injectable, EventEmitter, Output } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HttpClient, HttpErrorResponse, HttpResponse, HttpHeaders } from '@angular/common/http';
-import { Http, HttpModule } from '@angular/http';
-import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, retry } from 'rxjs/operators';
-import { DbbackendService, Mate, Transaction } from '../services/dbbackend.service';
+import { DbbackendService, Mate, Transaction } from './dbbackend.service';
 
 export interface Room{
   _id: string;
@@ -55,12 +52,12 @@ export class RoomService {
     room.admin.id = creator._id;
     room.admin.name = creator.name;
 
-    let result = await new Promise((resolve, reject) => { 
+    let result = await new Promise((resolve) => {
       this.http.post<Room>(thisUrl, room, this.httpOptions)
       .pipe(
         retry(3),
-        catchError((res) => this.dbbackendservice.handleError(res)),
-      ).subscribe(room => {resolve('Room created')});
+        catchError((res) => DbbackendService.handleError(res)),
+      ).subscribe(() => {resolve('Room created')});
     });
 
     if(result){
@@ -73,11 +70,11 @@ export class RoomService {
   async loadRoom(id: string){
     let thisUrl = this.url + '/room/' + id;
 
-    let result = await new Promise((resolve, reject) => { 
+    let result = await new Promise((resolve) => {
       this.http.get<Room>(thisUrl)
       .pipe(
         retry(3),
-        catchError((res) => this.dbbackendservice.handleError(res))
+        catchError((res) => DbbackendService.handleError(res))
       ).subscribe(room => {this.currentRoom = room as Room; resolve('success')});
     });
 
@@ -93,18 +90,18 @@ export class RoomService {
     let thisUrl = this.url + '/joinRoom';
     let userId = this.dbbackendservice.returnUserId();
 
-    let info: any;
+    let info: any = {};
 
     info.id = id;
     info.name = name;
     info.roomKey = key;
 
-    let result = await new Promise((resolve, reject) => {
+    let result = await new Promise(() => {
       this.http.post<Room>(thisUrl, info, this.httpOptions)
       .pipe(
         retry(3),
-        catchError((res) => this.dbbackendservice.handleError(res))
-      ).subscribe(room => { this.dbbackendservice.getMate(userId)}); // refresh user's rooms
+        catchError((res) => DbbackendService.handleError(res))
+      ).subscribe(() => { this.dbbackendservice.getMate(userId)}); // refresh user's rooms
     });
 
     if(result){
@@ -115,7 +112,7 @@ export class RoomService {
   }
 
   allMates(){
-    let balances = new Array();
+    let balances = [];
     let userId = this.dbbackendservice.returnUserId();
     for(let balance of this.currentRoom.balances){
       if(balance.aid == userId){
@@ -137,11 +134,11 @@ export class RoomService {
     info.room = this.currentRoom.name;
     info.roomKey = this.currentRoom.key;
 
-    let result = await new Promise((resolve, reject) => {
+    await new Promise((resolve) => {
       this.http.post<JSON>(thisUrl, info, this.httpOptions)
       .pipe(
         retry(3),
-        catchError((res) => this.dbbackendservice.handleError(res))
+        catchError((res) => DbbackendService.handleError(res))
       ).subscribe(json => resolve(json));
     });
   }
@@ -156,11 +153,11 @@ export class RoomService {
     transaction.fromid = this.dbbackendservice.returnUserId();
     transaction.title = reason;
 
-    let result = await new Promise((resolve, reject) => {
+    let result = await new Promise((resolve) => {
       this.http.post<Transaction>(thisUrl, transaction, this.httpOptions)
       .pipe(
         retry(3),
-        catchError((res) => this.dbbackendservice.handleError(res))
+        catchError((res) => DbbackendService.handleError(res))
       ).subscribe(transaction => resolve(transaction));
     });
 
