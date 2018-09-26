@@ -36,7 +36,7 @@ export class AuthService {
     return this._firebaseAuth.auth.currentUser.email;
   }
 
-  createUser(name, email, password){
+  createUser(email, password){
     return this._firebaseAuth.auth.createUserWithEmailAndPassword(email, password)
   }
 

@@ -2,6 +2,7 @@ import { Injectable, EventEmitter, Output } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { catchError, retry } from 'rxjs/operators';
+import {environment} from "../../environments/environment";
 
 export interface Mate{
   _id: string;
@@ -29,7 +30,7 @@ export class Transaction implements Transaction{}
 export class DbbackendService {
   @Output() trackMate: EventEmitter<Mate> = new EventEmitter();
 
-  private url = 'http://roomio.stewartdev.ca/api';
+  private url = environment.backend.url;
   private currentUser: Mate = null;
 
   constructor(private http: HttpClient) { }

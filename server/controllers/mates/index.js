@@ -5,44 +5,44 @@ let createMate = function (req, res) {
     let mate = new Mate(req.body);
     mate.save(function (err, mate) {
         if (err) {
-            res.send(500, err);
+            res.status(500).send(err);
         }
 
-        res.json(200, mate);
+        res.status(200).json(mate);
     });
 };
 
 let getMates = function (req, res) {
     Mate.find(function (err, mates) {
         if (err) {
-            res.send(500, err);
+            res.status(500).send(err);
         }
-        res.json(200, mates)
+        res.status(200).json(mates);
     });
 };
 
 let getMate = function (req, res) {
     Mate.findById(req.params.id, function (err, mate) {
         if (err) {
-            res.send(500, err);
+            res.status(500).send(err);
         }
-        res.json(200, mate);
+        res.status(200).json(mate);
     });
 };
 
 let getMateByEmail = function (req, res) {
     Mate.findOne({email: req.params.email}, function (err, mate) {
         if (err) {
-            res.send(500, err);
+            res.status(500).send(err);
         }
-        res.json(200, mate);
+        res.status(200).json(mate);
     });
 };
 
 let updateMate = function (req, res) {
     Mate.findById(req.params.id, function (err, mate) {
         if (err) {
-            res.send(500, err);
+            res.status(500).send(err);
         }
         if (req.body.name) {
             mate.name = req.body.name;
@@ -54,9 +54,9 @@ let updateMate = function (req, res) {
 
         mate.save(function (err, mate) {
             if (err) {
-                res.send(500, err);
+                res.status(500).send(err);
             }
-            res.json(200, mate);
+            res.status(200).json(mate);
         });
     });
 };
@@ -64,9 +64,9 @@ let updateMate = function (req, res) {
 let deleteMate = function (req, res) {
     Mate.findByIdAndRemove(req.params.id, function (err) {
         if (err) {
-            res.send(500, err);
+            res.status(500).send(err);
         }
-        res.json(200, {'deleted': true});
+        res.status(200).json({'deleted': true});
     });
 };
 

@@ -2,6 +2,7 @@ import { Injectable, EventEmitter, Output } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, retry } from 'rxjs/operators';
 import { DbbackendService, Mate, Transaction } from './dbbackend.service';
+import {environment} from "../../environments/environment";
 
 export interface Room{
   _id: string;
@@ -30,7 +31,7 @@ export class Room implements Room{
 export class RoomService {
   @Output() changeRoom: EventEmitter<Room> = new EventEmitter();
 
-  private url = 'http://roomio.stewartdev.ca/api';
+  private url = environment.backend.url;
   private currentRoom: Room = null;
   private httpOptions = {
     headers: new HttpHeaders({

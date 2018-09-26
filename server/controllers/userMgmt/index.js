@@ -23,9 +23,9 @@ console.log(process.env.EMAIL_PASS);
 
   await transporter.sendMail(mailOptions, (err, info) => {
     if(err){
-      res.send(500, err);
+      res.status(500).send(err);
     }else{
-      res.json(200, info.response);
+      res.status(200).json(info.response);
     }
   });
 };

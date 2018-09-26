@@ -7,5 +7,8 @@ export const environment = {
     projectId: "roomio-63fc5",
     storageBucket: "roomio-63fc5.appspot.com",
     messagingSenderId: "138792748529"
+  },
+  backend: {
+    url: "http://roomio.stewartdev.ca/api"
   }
 };

@@ -6,14 +6,14 @@ let createTransaction = async function (req, res) {
     let transaction = new Transaction(req.body);
     transaction.save(function (err, transaction) {
         if (err) {
-            res.send(500, err);
+            res.status(500).send(err);
         }
 
         saveDebt(transaction.roomid, transaction.fromid, transaction.toid, transaction.amount).then(() => {
             balanceDebts(transaction.roomid);
         });
 
-        res.json(200, transaction);
+        res.status(200).json(transaction);
     });
 };
 
@@ -132,25 +132,25 @@ function getKey(object, value){
 let getTransactions = function (req, res) {
     Transaction.find(function (err, transactions) {
         if (err) {
-            res.send(500, err);
+            res.status(500).send(err);
         }
-        res.json(200, transactions)
+        res.status(200).json(transactions);
     });
 };
 
 let getTransaction = function (req, res) {
     Transaction.findById(req.params.id, function (err, transaction) {
         if (err) {
-            res.send(500, err);
+            res.status(500).send(err);
         }
-        res.json(200, transaction);
+        res.status(200).json(transaction);
     });
 };
 
 let updateTransaction = function (req, res) {
     Transaction.findById(req.params.id, function (err, transaction) {
         if (err) {
-            res.send(500, err);
+            res.status(500).send(err);
         }
         if (req.body.amount) {
             transaction.amount = req.body.amount;
@@ -158,9 +158,9 @@ let updateTransaction = function (req, res) {
 
         transaction.save(function (err, transaction) {
             if (err) {
-                res.send(500, err);
+                res.status(500).send(err);
             }
-            res.json(200, transaction);
+            res.status(200).json(transaction);
         });
     });
 };
@@ -168,9 +168,9 @@ let updateTransaction = function (req, res) {
 let deleteTransaction = function (req, res) {
     Transaction.findByIdAndRemove(req.params.id, function (err) {
         if (err) {
-            res.send(500, err);
+            res.status(500).send(err);
         }
-        res.json(200, {'deleted': true});
+        res.status(200).json({'deleted': true});
     });
 };
 

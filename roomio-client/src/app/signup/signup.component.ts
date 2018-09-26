@@ -3,6 +3,8 @@ import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { DbbackendService } from '../services/dbbackend.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import UserCredential = firebase.auth.UserCredential;
+import * as firebase from "firebase";
 
 @Component({
   selector: 'app-signup',
@@ -29,9 +31,9 @@ export class SignupComponent implements OnInit {
     let email: string = this.form.value.email.trim();
     let password: string = this.form.value.password;
 
-    this.authService.createUser(name, email, password).then(res => {
-      res.updateProfile({displayName: name, photoURL: ''});
+    this.authService.createUser(email, password).then(() => {
       this.authService.signInRegular(email, password).then(res => {
+        firebase.auth().currentUser.updateProfile({displayName: name, photoURL: ''});
         console.log(res);
         this.dbbackendservice.createMate(name, email).then(res => {
           console.log(res);

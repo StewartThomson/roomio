@@ -10,20 +10,20 @@ let createRoom = function (req, res) {
     room.key = uuidV4();
     Mate.findById(room.admin.id, function (err, mate) {
         if (err) {
-            res.send(500, err);
+            res.status(500).send(err);
         }
 
         room.save(function (err, room) {
             if (err) {
-                res.send(500, err);
+                res.status(500).send(err);
             }
             mate.rooms.push({_id: room._id, name: room.name});
             mate.save((err) => {
                 if (err) {
-                    res.send(500, err);
+                    res.status(500).send(err);
                 }
             });
-            res.json(200, room);
+            res.status(200).json(room);
         });
     });
 };
@@ -31,25 +31,25 @@ let createRoom = function (req, res) {
 let getRooms = function (req, res) {
     Room.find(function (err, rooms) {
         if (err) {
-            res.send(500, err);
+            res.status(500).send(err);
         }
-        res.json(200, rooms)
+        res.status(200).json(rooms);
     });
 };
 
 let getRoom = function (req, res) {
     Room.findById(req.params.id, function (err, room) {
         if (err) {
-            res.send(500, err);
+            res.status(500).send(err);
         }
-        res.json(200, room);
+        res.status(200).json(room);
     });
 };
 
 let updateRoom = function (req, res) {
     Room.findById(req.params.id, function (err, room) {
         if (err) {
-            res.send(500, err);
+            res.status(500).send(err);
         }
         if (req.body.name) {
             room.name = req.body.name;
@@ -57,9 +57,9 @@ let updateRoom = function (req, res) {
 
         room.save(function (err, room) {
             if (err) {
-                res.send(500, err);
+                res.status(500).send(err);
             }
-            res.json(200, room);
+            res.status(200).json(room);
         });
     });
 };
@@ -67,9 +67,9 @@ let updateRoom = function (req, res) {
 let deleteRoom = function (req, res) {
     Room.findByIdAndRemove(req.params.id, function (err) {
         if (err) {
-            res.send(500, err);
+            res.status(500).send(err);
         }
-        res.json(200, {'deleted': true});
+        res.status(200).json({'deleted': true});
     });
 };
 
@@ -77,7 +77,7 @@ let addMateToRoom = async function (req, res) {
     let query = Room.where({key: req.body.roomKey});
     query.findOne(async function (err, room) {
         if (err) {
-            res.send(500, err);
+            res.status(500).send(err);
         }
 
         let addId = req.body.id;
@@ -107,12 +107,12 @@ let addMateToRoom = async function (req, res) {
 
         await Mate.findById(req.params.mateId, async function (err, mate) {
             if (err) {
-                res.send(500, err);
+                res.status(500).send(err);
             }
 
             for (let mateRoom of mate.rooms) {
                 if (mateRoom._id === room._id) {
-                    res.send(500, 'User already in this room');
+                    res.status(500).send('User already in this room');
                 }
             }
 
@@ -120,16 +120,16 @@ let addMateToRoom = async function (req, res) {
 
             await mate.save(function (err) {
                 if (err) {
-                    res.send(500, err);
+                    res.status(500).send(err);
                 }
             });
         });
 
         room.save(function (err, room) {
             if (err) {
-                res.send(500, err);
+                res.status(500).send(err);
             }
-            res.json(200, room);
+            res.status(200).json(room);
         });
     });
 };
