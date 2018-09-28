@@ -15,10 +15,6 @@ let app = express();
 
 process.env.NODE_ENV = 'development';
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
@@ -37,8 +33,8 @@ app.use(function (req, res, next) {
 });
 
 app.use('/api', routes);
-app.get('/coop', (req, res) => {
-    res.render('coop/index.html');
+app.get('/coop/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/coop/index.html'));
 });
 
 function initializeModels() {
