@@ -3,7 +3,6 @@ import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { DbbackendService } from '../services/dbbackend.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import UserCredential = firebase.auth.UserCredential;
 import * as firebase from "firebase";
 
 @Component({
@@ -34,9 +33,7 @@ export class SignupComponent implements OnInit {
     this.authService.createUser(email, password).then(() => {
       this.authService.signInRegular(email, password).then(res => {
         firebase.auth().currentUser.updateProfile({displayName: name, photoURL: ''});
-        console.log(res);
         this.dbbackendservice.createMate(name, email).then(res => {
-          console.log(res);
           this.router.navigate(['view']);
         }).catch(() => {
           console.log('Error creating mate');

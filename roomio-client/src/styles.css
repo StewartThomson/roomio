@@ -9,3 +9,7 @@
 .err{
   color: #d00;
 }
+
+body {
+  background-color: lightgray;
+}

@@ -1,0 +1,10 @@
+.log-sign-buttons > button{
+  margin: 20px;
+}
+
+.log-sign-buttons {
+  background-color: lightblue;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}

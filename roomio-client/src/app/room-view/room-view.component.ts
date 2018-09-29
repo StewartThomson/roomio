@@ -6,7 +6,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-room-view',
   templateUrl: './room-view.component.html',
-  styleUrls: ['./room-view.component.css']
+  styleUrls: ['./room-view.component.css'],
+  host: {'class': 'room-view'}
 })
 export class RoomViewComponent implements OnInit {
   room: Room;

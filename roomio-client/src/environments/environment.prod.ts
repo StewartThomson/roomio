@@ -9,6 +9,6 @@ export const environment = {
     messagingSenderId: "138792748529"
   },
   backend: {
-    url: "http://roomio.stewartdev.ca/api"
+    url: "https://stewartdev.ca/api"
   }
 };

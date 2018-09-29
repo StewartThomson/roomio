@@ -8,7 +8,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-dash',
   templateUrl: './dash.component.html',
-  styleUrls: ['./dash.component.css']
+  styleUrls: ['./dash.component.css'],
+  host: {'class': 'dash-comp'}
 })
 export class DashComponent implements OnInit {
   constructor(private modalService: NgbModal, private roomservice: RoomService, private router: Router, 

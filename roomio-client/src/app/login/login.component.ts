@@ -28,9 +28,7 @@ export class LoginComponent implements OnInit {
     let email = this.form.value.email.trim();
     let password = this.form.value.password;
     this.authService.signInRegular(email, password).then((res) => {
-      console.log(res);
       this.dbbackendservice.getMateByEmail(email).then(res => {
-        console.log(res);
         this.router.navigate(['view']);
       }).catch(err => {
         console.log(err);

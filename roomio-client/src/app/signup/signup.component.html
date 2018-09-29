@@ -1,6 +1,3 @@
-<p>
-  signup works!
-</p>
 <form action="" class="form-horizontal" [formGroup]="form">
 
   <div class="form-group">
@@ -33,10 +30,10 @@
     </div>  
   </div>
 
-  <button type="submit" class="btn btn-primary" (click)="signUp()" [disabled]="!form.valid">
+  <button mat-raised-button="" type="submit"  (click)="signUp()" [disabled]="!form.valid">
     Sign up
   </button>
-  <button class="btn" (click)="reset()">Clear</button>
+  <button mat-button (click)="reset()">Clear</button>
 
   <div class="err" *ngIf="emailTaken">
     Email already in use.

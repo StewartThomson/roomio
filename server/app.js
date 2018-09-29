@@ -24,9 +24,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', 'https://stewartdev.ca');
-    res.setHeader('Access-Control-Allow-Origin', 'http://stewartdev.ca');
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
+    let allowedOrigins = ['https://stewartdev.ca', 'http://stewartdev.ca', 'http://localhost:4200', 'http://localhost:3000'];
+    let origin = req.headers.origin;
+    if(allowedOrigins.indexOf(origin) > -1){
+        res.setHeader('Access-control-Allow-Origin', origin);
+    }
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     next();
@@ -36,6 +38,10 @@ app.use('/api', routes);
 app.get('/coop/*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/coop/index.html'));
 });
+app.get('/roomio/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/roomio/index.html'));
+});
+
 
 function initializeModels() {
     mongoose.connect(config.db, {useNewUrlParser: true}).then().catch(err => console.log('Mongodb failed to connect', {err: err}));

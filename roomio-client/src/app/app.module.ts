@@ -18,7 +18,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { LoginComponent } from './login/login.component';
 
 import { environment } from '../environments/environment';
-import { AngularFireModule } from '@angular/fire';
+import {AngularFireModule, FirebaseOptionsToken} from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AuthService } from './services/auth.service';
 import { DashComponent } from './dash/dash.component';
@@ -52,7 +52,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(
       appRoutes,
     ),
-    AngularFireModule.initializeApp(environment.firebase, 'angular-auth-firebase'),
+    // AngularFireModule.initializeApp(environment.firebase, 'angular-auth-firebase'),
     AngularFireAuthModule,
     BrowserModule,
     HttpClientModule,
@@ -65,7 +65,7 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     BrowserAnimationsModule
   ],
-  providers: [AuthService, AuthGuardService, DbbackendService, RoomService],
+  providers: [AuthService, AuthGuardService, DbbackendService, RoomService, { provide: FirebaseOptionsToken, useValue: environment.firebase }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

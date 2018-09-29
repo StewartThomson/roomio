@@ -7,6 +7,7 @@ let createTransaction = async function (req, res) {
     transaction.save(function (err, transaction) {
         if (err) {
             res.status(500).send(err);
+            return;
         }
 
         saveDebt(transaction.roomid, transaction.fromid, transaction.toid, transaction.amount).then(() => {
@@ -133,6 +134,7 @@ let getTransactions = function (req, res) {
     Transaction.find(function (err, transactions) {
         if (err) {
             res.status(500).send(err);
+            return;
         }
         res.status(200).json(transactions);
     });
@@ -142,6 +144,7 @@ let getTransaction = function (req, res) {
     Transaction.findById(req.params.id, function (err, transaction) {
         if (err) {
             res.status(500).send(err);
+            return;
         }
         res.status(200).json(transaction);
     });
@@ -151,6 +154,7 @@ let updateTransaction = function (req, res) {
     Transaction.findById(req.params.id, function (err, transaction) {
         if (err) {
             res.status(500).send(err);
+            return;
         }
         if (req.body.amount) {
             transaction.amount = req.body.amount;
@@ -159,6 +163,7 @@ let updateTransaction = function (req, res) {
         transaction.save(function (err, transaction) {
             if (err) {
                 res.status(500).send(err);
+                return;
             }
             res.status(200).json(transaction);
         });
@@ -169,6 +174,7 @@ let deleteTransaction = function (req, res) {
     Transaction.findByIdAndRemove(req.params.id, function (err) {
         if (err) {
             res.status(500).send(err);
+            return;
         }
         res.status(200).json({'deleted': true});
     });

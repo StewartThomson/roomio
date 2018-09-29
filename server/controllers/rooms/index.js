@@ -11,11 +11,13 @@ let createRoom = function (req, res) {
     Mate.findById(room.admin.id, function (err, mate) {
         if (err) {
             res.status(500).send(err);
+            return;
         }
 
         room.save(function (err, room) {
             if (err) {
                 res.status(500).send(err);
+                return;
             }
             mate.rooms.push({_id: room._id, name: room.name});
             mate.save((err) => {
@@ -32,6 +34,7 @@ let getRooms = function (req, res) {
     Room.find(function (err, rooms) {
         if (err) {
             res.status(500).send(err);
+            return;
         }
         res.status(200).json(rooms);
     });
@@ -41,6 +44,7 @@ let getRoom = function (req, res) {
     Room.findById(req.params.id, function (err, room) {
         if (err) {
             res.status(500).send(err);
+            return;
         }
         res.status(200).json(room);
     });
@@ -50,6 +54,7 @@ let updateRoom = function (req, res) {
     Room.findById(req.params.id, function (err, room) {
         if (err) {
             res.status(500).send(err);
+            return;
         }
         if (req.body.name) {
             room.name = req.body.name;
@@ -58,6 +63,7 @@ let updateRoom = function (req, res) {
         room.save(function (err, room) {
             if (err) {
                 res.status(500).send(err);
+                return;
             }
             res.status(200).json(room);
         });
@@ -78,6 +84,7 @@ let addMateToRoom = async function (req, res) {
     query.findOne(async function (err, room) {
         if (err) {
             res.status(500).send(err);
+            return;
         }
 
         let addId = req.body.id;
@@ -105,14 +112,16 @@ let addMateToRoom = async function (req, res) {
 
         room.count = room.count + 1;
 
-        await Mate.findById(req.params.mateId, async function (err, mate) {
+        await Mate.findById(addId, async function (err, mate) {
             if (err) {
                 res.status(500).send(err);
+                return
             }
 
             for (let mateRoom of mate.rooms) {
                 if (mateRoom._id === room._id) {
                     res.status(500).send('User already in this room');
+                    return;
                 }
             }
 
@@ -128,6 +137,7 @@ let addMateToRoom = async function (req, res) {
         room.save(function (err, room) {
             if (err) {
                 res.status(500).send(err);
+                return;
             }
             res.status(200).json(room);
         });

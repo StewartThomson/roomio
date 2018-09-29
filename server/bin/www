@@ -17,21 +17,21 @@ let https = require('https');
 let port = normalizePort(process.env.PORT || '443');
 app.set('port', port);
 
+// // Certificate
+// const privateKey = fs.readFileSync('/etc/letsencrypt/live/stewartdev.ca/privkey.pem', 'utf8');
+// const certificate = fs.readFileSync('/etc/letsencrypt/live/stewartdev.ca/cert.pem', 'utf8');
+// const ca = fs.readFileSync('/etc/letsencrypt/live/stewartdev.ca/chain.pem', 'utf8');
+//
+// const credentials = {
+//     key: privateKey,
+//     cert: certificate,
+//     ca: ca
+// };
+// /**
+//  * Create HTTP server.
+//  */
+// let server = https.createServer(credentials, app);
 if(process.env.NODE_ENV === 'production') {
-// Certificate
-    const privateKey = fs.readFileSync('/etc/letsencrypt/live/stewartdev.ca/privkey.pem', 'utf8');
-    const certificate = fs.readFileSync('/etc/letsencrypt/live/stewartdev.ca/cert.pem', 'utf8');
-    const ca = fs.readFileSync('/etc/letsencrypt/live/stewartdev.ca/chain.pem', 'utf8');
-
-    const credentials = {
-        key: privateKey,
-        cert: certificate,
-        ca: ca
-    };
-    /**
-     * Create HTTP server.
-     */
-    let server = https.createServer(credentials, app);
     server.listen(port);
     server.on('error', onError);
     server.on('listening', onListening);

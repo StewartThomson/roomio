@@ -1,6 +1,4 @@
 <!--suppress ALL -->
-<p>{{ mate | json }}</p>
-
 <ng-template #roomInfo let-c="close" let-d="dismiss">
 
   <div class="modal-header">
@@ -61,11 +59,11 @@
   </div>
 </ng-template>
 
-
+<h2 class="header">{{mate.name}}'s Rooms</h2>
 <mat-form-field *ngIf="this.mate.rooms.length > 0">
   <mat-select [(value)]="selectedRoomId" (selectionChange)="selectRoom()">
     <mat-option *ngFor="let room of this.mate.rooms" [value]="room._id">{{ room.name }}</mat-option>
   </mat-select>
 </mat-form-field>
-<button mat-button (click)="createRoomModal(roomInfo)">Create Room</button>
-<button mat-button (click)="createRoomModal(joinRoomModal)">Join Room</button>
+<button mat-raised-button (click)="createRoomModal(roomInfo)">Create Room</button>
+<button mat-raised-button (click)="createRoomModal(joinRoomModal)">Join Room</button>
