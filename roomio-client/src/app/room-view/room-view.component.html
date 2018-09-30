@@ -38,17 +38,23 @@
     </div>
   </ng-template>
 
+  <ng-template #confirmationModal let-c="close" let-d="dismiss" class="fade">
+    <div class="modal-body">
+      <h1>Money sent</h1>
+    </div>
+  </ng-template>
+
   <mat-form-field>
-    <mat-select [(value)]="selectedMateId" (change)="selectMate()">
+    <mat-select [(value)]="selectedMateId" (selectionChange)="selectMate()">
       <mat-option *ngFor="let mate of this.mates" [value]="mate._id">{{ mate.name }}</mat-option>
     </mat-select>
   </mat-form-field>
 
   <div *ngIf="this.selectedMateId">
-    {{ selectedMate | json }}
-    <h1 *ngIf="this.selectedMate.owed > 0">You owe {{this.selectedMate.name}} ${{this.selectedMate.owed}}</h1>
-    <h1 *ngIf="this.selectedMate.owed < 0">{{this.selectedMate.name}} owes you ${{this.selectedMate.owed}}</h1>
-    <h1 *ngIf="this.selectedMate.owed == 0">No money owed between you and {{this.selectedMate.name}}</h1>
+    <h4 *ngIf="this.selectedMate.owed > 0">You owe {{this.selectedMate.name}} ${{this.selectedMate.owed}}</h4>
+    <h4 *ngIf="this.selectedMate.owed < 0">{{this.selectedMate.name}} owes you
+      ${{this.Math.round(this.Math.abs(this.selectedMate.owed), 2)}}</h4>
+    <h4 *ngIf="this.selectedMate.owed == 0">No money owed between you and {{this.selectedMate.name}}</h4>
 
     <mat-accordion>
       <mat-expansion-panel>
@@ -64,7 +70,7 @@
               <input matInput type="text" id="moneyReason" class="form-control" formControlName="moneyReason">
               <div class="err"
                    *ngIf="!this.sendMoneyForm.get('moneyReason').valid && this.sendMoneyForm.get('moneyReason').touched">
-                Please Enter a reason for this transaction;
+                Please enter a reason for this transaction
               </div>
             </div>
           </div>
@@ -73,11 +79,20 @@
           <div class="form-group">
             <div class="col-lg">
               <label for="amount" class="control-label required">Amount:</label>
-              <input matInput type="number" min="0" id="amount" formControlName="amount" class="form-control">
+              <div class="input-icon">
+                <input (change)="forceTwoDecimal()" step="0.01" matInput type="number" min="0" id="amount"
+                       formControlName="amount" class="form-control">
+                <i>$</i>
+              </div>
+              <div class="err"
+                   *ngIf="!this.sendMoneyForm.get('amount').valid && this.sendMoneyForm.get('amount').touched">
+                Please enter an amount for this transaction
+              </div>
             </div>
           </div>
         </mat-form-field>
-        <button mat-raised-button type="button" [disabled]="!sendMoneyForm.valid" (click)="sendMoney()">Give money
+        <button mat-raised-button type="button" [disabled]="!sendMoneyForm.valid" (click)="sendMoney(); resetFields();">
+          Give money
         </button>
       </mat-expansion-panel>
     </mat-accordion>

@@ -18,7 +18,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { LoginComponent } from './login/login.component';
 
 import { environment } from '../environments/environment';
-import {AngularFireModule, FirebaseOptionsToken} from '@angular/fire';
+import {FirebaseOptionsToken} from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AuthService } from './services/auth.service';
 import { DashComponent } from './dash/dash.component';
@@ -52,7 +52,6 @@ const appRoutes: Routes = [
     RouterModule.forRoot(
       appRoutes,
     ),
-    // AngularFireModule.initializeApp(environment.firebase, 'angular-auth-firebase'),
     AngularFireAuthModule,
     BrowserModule,
     HttpClientModule,

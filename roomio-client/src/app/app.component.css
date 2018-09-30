@@ -5,6 +5,7 @@
   grid-template-rows: 1fr;
   grid-gap: 1px 1px;
   grid-template-areas: "left-banner main-content right-banner";
+  background-color: lightgray;
 }
 
 .left-banner {
@@ -31,4 +32,15 @@
 .room-view {
   position: absolute;
   top: 0;
+}
+
+@media only screen and (max-width: 768px){
+  .grid-container {
+    display: grid;
+    height: 100%;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    grid-gap: 1px 1px;
+    grid-template-areas: "main-content";
+  }
 }
